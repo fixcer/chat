@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "babel-node src/server.js"
+    "start": "nodemon --exec babel-node src/server.js"
   },
   "repository": {
     "type": "git",
@@ -19,8 +19,11 @@
   "homepage": "https://github.com/fixcer/chat#readme",
   "dependencies": {
     "bluebird": "^3.5.3",
+    "ejs": "^3.1.5",
     "express": "^4.17.1",
-    "mongoose": "^4.13.9"
+    "express-ejs-extend": "0.0.1",
+    "mongoose": "^4.13.9",
+    "nodemon": "^2.0.4"
   },
   "devDependencies": {
     "babel-cli": "^6.26.0",
