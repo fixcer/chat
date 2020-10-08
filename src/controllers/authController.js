@@ -1,5 +1,5 @@
 const getLoginRegister = (req, res) => {
-  return res.render('auth/loginRegister');
+  return res.render('auth/index');
 };
 
 const getLogout = (req, res) => {};
