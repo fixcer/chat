@@ -1,2 +1,7 @@
 # chat
-Chat using NodeJS
+
+## Chat using NodeJS
+
+### npm install
+
+### bower install
