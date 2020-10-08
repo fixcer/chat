@@ -1,6 +1,7 @@
 import express from 'express';
 import ConnectDB from './config/connectDB';
 import configViewEngine from './config/viewEngine';
+import initialRoutes from './routes/web';
 
 // Initial app
 const app = express();
@@ -11,16 +12,18 @@ ConnectDB();
 // Config view engine
 configViewEngine(app);
 
-app.get('/', (req, res) => {
-  return res.render('main/master');
-});
+// Initial all routes
+initialRoutes(app);
 
-app.get('/login-register', (req, res) => {
-  return res.render('auth/loginRegister');
-});
+// app.listen(process.env.APP_PORT, process.env.APP_HOST, () => {
+//   console.log(
+//     `Hello Fixcer, i'm running at ${process.env.APP_HOST}:${process.env.APP_PORT}/`
+//   );
+// });
 
-app.listen(process.env.APP_PORT, process.env.APP_HOST, () => {
-  console.log(
-    `Hello Fixcer, i'm running at ${process.env.APP_HOST}:${process.env.APP_PORT}/`
-  );
+const HOST = 'localhost';
+const PORT = 8000;
+
+app.listen(PORT, HOST, () => {
+  console.log(`Hello Fixcer, i'm running at ${HOST}:${PORT}/`);
 });

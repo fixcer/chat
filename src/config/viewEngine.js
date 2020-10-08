@@ -1,7 +1,10 @@
 import express from 'express';
 import expressEjsExtend from 'express-ejs-extend';
 
-// Config view engine for app
+/**
+ * Config view engine for app
+ * @param app from exactly express module
+ */
 const configViewEngine = (app) => {
   app.use(express.static('./src/public'));
   app.engine('ejs', expressEjsExtend);
