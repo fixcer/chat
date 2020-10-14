@@ -1,11 +1,24 @@
 import { validationResult } from 'express-validator/check';
 
-const getLoginRegister = (req, res) => {
+const getAuth = (req, res) => {
   return res.render('auth/index');
 };
 
 const postRegister = (req, res) => {
-  console.log(validationResult(req));
+  const errorArray = [];
+  const validationErrors = validationResult(req);
+
+  if (!validationErrors.isEmpty()) {
+    const errors = Object.values(validationErrors.mapped());
+    errors.forEach((error) => {
+      errorArray.push(error.msg);
+    });
+
+    console.log(errorArray);
+    return;
+  }
+
+  console.log(req.body);
 };
 
-module.exports = { getLoginRegister, postRegister };
+module.exports = { getAuth, postRegister };

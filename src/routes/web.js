@@ -11,7 +11,7 @@ const router = express.Router();
 
 const initialRoutes = (app) => {
   router.get('/', home.getHome);
-  router.get('/login-register', auth.getLoginRegister);
+  router.get('/auth', auth.getAuth);
   router.post('/register', authValid.register, auth.postRegister);
 
   return app.use('/', router);
