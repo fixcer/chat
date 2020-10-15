@@ -11,6 +11,8 @@ export const transErrors = {
   account_removed: 'Tài khoản đã bị xóa',
   account_not_active: 'Tài khoản chưa được kích hoạt',
   token_undefined: 'Token không tồn tại',
+  login_failed: 'Tài khoản hoặc mật khẩu không chính xác.',
+  server_error: 'Server đang gặp sự cố, vui lòng thử lại sau.',
 };
 
 export const transSuccess = {
@@ -18,6 +20,9 @@ export const transSuccess = {
     return `Tài khoản <strong>${userEmail}</strong> đã được tạo. Vui lòng kiểm tra email để kích hoạt tài khoản`;
   },
   account_active: 'Kích hoạt tài khoản thành công.',
+  login_success: (username) => {
+    return `Xin chào ${username}, chúc bạn một ngày tốt lành.`;
+  },
 };
 
 export const transEmail = {

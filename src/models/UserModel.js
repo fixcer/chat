@@ -1,4 +1,6 @@
 import mongoose from 'mongoose';
+import bcrypt from 'bcrypt';
+import passport from 'passport';
 
 const Schema = mongoose.Schema;
 
@@ -58,6 +60,15 @@ UserSchema.statics = {
         'local.verifyToken': null,
       }
     ).exec();
+  },
+  findUserById(id) {
+    return this.findById(id).exec();
+  },
+};
+
+UserSchema.methods = {
+  comparePassword(password) {
+    return bcrypt.compare(password, this.local.password);
   },
 };
 
