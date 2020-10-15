@@ -15,12 +15,20 @@ const router = express.Router();
  */
 
 const initialRoutes = (app) => {
-  router.get('/', home.getHome);
-  router.get('/auth', auth.getAuth);
-  router.post('/register', authValid.register, auth.postRegister);
-  router.get('/verify/:token', auth.verifyAccount);
+  router.get('/', auth.checkLoggedIn, home.getHome);
+  router.get('/logout', auth.checkLoggedIn, auth.getLogout);
+
+  router.get('/auth', auth.checkLoggedOut, auth.getAuth);
+  router.post(
+    '/register',
+    auth.checkLoggedOut,
+    authValid.register,
+    auth.postRegister
+  );
+  router.get('/verify/:token', auth.checkLoggedOut, auth.verifyAccount);
   router.post(
     '/login',
+    auth.checkLoggedOut,
     passport.authenticate('local', {
       successRedirect: '/',
       failureRedirect: '/auth',

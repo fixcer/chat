@@ -23,6 +23,7 @@ export const transSuccess = {
   login_success: (username) => {
     return `Xin chào ${username}, chúc bạn một ngày tốt lành.`;
   },
+  logout_success: 'Hẹn gặp lại bạn.',
 };
 
 export const transEmail = {
