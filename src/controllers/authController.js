@@ -1,4 +1,5 @@
 import { validationResult } from 'express-validator/check';
+import { auth } from '.';
 import { authService } from '../services/index';
 
 const getAuth = (req, res) => {
@@ -27,7 +28,9 @@ const postRegister = async (req, res) => {
     const user = await authService.register(
       req.body.email,
       req.body.gender,
-      req.body.password
+      req.body.password,
+      req.protocol,
+      req.get('host')
     );
     successArray.push(user);
     req.flash('success', successArray);
@@ -39,4 +42,21 @@ const postRegister = async (req, res) => {
   }
 };
 
-module.exports = { getAuth, postRegister };
+const verifyAccount = async (req, res) => {
+  const errorArray = [];
+  const successArray = [];
+
+  try {
+    const verifySuccess = await authService.verifyAccount(req.params.token);
+
+    successArray.push(verifySuccess);
+    req.flash('success', successArray);
+    return res.redirect('/auth');
+  } catch (error) {
+    errorArray.push(error);
+    req.flash('errors', errorArray);
+    return res.redirect('/auth');
+  }
+};
+
+module.exports = { getAuth, postRegister, verifyAccount };
