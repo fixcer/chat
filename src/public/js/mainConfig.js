@@ -7,7 +7,7 @@ function nineScrollLeft() {
     horizrailenabled: false,
     cursorcolor: '#ECECEC',
     cursorwidth: '7px',
-    scrollspeed: 50
+    scrollspeed: 50,
   });
 }
 
@@ -17,7 +17,7 @@ function nineScrollRight() {
     horizrailenabled: false,
     cursorcolor: '#ECECEC',
     cursorwidth: '7px',
-    scrollspeed: 50
+    scrollspeed: 50,
   });
   $('.right .chat').scrollTop($('.right .chat')[0].scrollHeight);
 }
@@ -34,12 +34,12 @@ function enableEmojioneArea(chatId) {
     search: false,
     shortnames: false,
     events: {
-      keyup: function(editor, event) {
+      keyup: function (editor, event) {
         $('.write-chat').val(this.getText());
-      }
+      },
     },
   });
-  $('.icon-chat').bind('click', function(event) {
+  $('.icon-chat').bind('click', function (event) {
     event.preventDefault();
     $('.emojionearea-button').click();
     $('.emojionearea-editor').focus();
@@ -56,55 +56,59 @@ function spinLoading() {
 
 function ajaxLoading() {
   $(document)
-    .ajaxStart(function() {
+    .ajaxStart(function () {
       spinLoading();
     })
-    .ajaxStop(function() {
+    .ajaxStop(function () {
       spinLoaded();
     });
 }
 
 function showModalContacts() {
-  $('#show-modal-contacts').click(function() {
+  $('#show-modal-contacts').click(function () {
     $(this).find('.noti_contact_counter').fadeOut('slow');
   });
 }
 
 function configNotification() {
-  $('#noti_Button').click(function() {
+  $('#noti_Button').click(function () {
     $('#notifications').fadeToggle('fast', 'linear');
     $('.noti_counter').fadeOut('slow');
     return false;
   });
-  $(document).click(function() {
+  $(document).click(function () {
     $('#notifications').fadeOut('fast', 'linear');
   });
 }
 
 function gridPhotos(layoutNumber) {
-  let countRows = Math.ceil($('#imagesModal').find('div.all-images>img').length / layoutNumber);
-  let layoutStr = new Array(countRows).fill(layoutNumber).join("");
-  $('#imagesModal').find('div.all-images').photosetGrid({
-    highresLinks: true,
-    rel: 'withhearts-gallery',
-    gutter: '2px',
-    layout: layoutStr,
-    onComplete: function() {
-      $('.all-images').css({
-        'visibility': 'visible'
-      });
-      $('.all-images a').colorbox({
-        photo: true,
-        scalePhotos: true,
-        maxHeight: '90%',
-        maxWidth: '90%'
-      });
-    }
-  });
+  let countRows = Math.ceil(
+    $('#imagesModal').find('div.all-images>img').length / layoutNumber
+  );
+  let layoutStr = new Array(countRows).fill(layoutNumber).join('');
+  $('#imagesModal')
+    .find('div.all-images')
+    .photosetGrid({
+      highresLinks: true,
+      rel: 'withhearts-gallery',
+      gutter: '2px',
+      layout: layoutStr,
+      onComplete: function () {
+        $('.all-images').css({
+          visibility: 'visible',
+        });
+        $('.all-images a').colorbox({
+          photo: true,
+          scalePhotos: true,
+          maxHeight: '90%',
+          maxWidth: '90%',
+        });
+      },
+    });
 }
 
 function showButtonGroupChat() {
-  $('#select-type-chat').bind('change', function() {
+  $('#select-type-chat').bind('change', function () {
     if ($(this).val() === 'group-chat') {
       $('.create-group-chat').show();
       // Do something...
@@ -115,34 +119,48 @@ function showButtonGroupChat() {
 }
 
 function addFriendsToGroup() {
-  $('ul#group-chat-friends').find('div.add-user').bind('click', function() {
-    let uid = $(this).data('uid');
-    $(this).remove();
-    let html = $('ul#group-chat-friends').find('div[data-uid=' + uid + ']').html();
+  $('ul#group-chat-friends')
+    .find('div.add-user')
+    .bind('click', function () {
+      let uid = $(this).data('uid');
+      $(this).remove();
+      let html = $('ul#group-chat-friends')
+        .find('div[data-uid=' + uid + ']')
+        .html();
 
-    let promise = new Promise(function(resolve, reject) {
-      $('ul#friends-added').append(html);
-      $('#groupChatModal .list-user-added').show();
-      resolve(true);
+      let promise = new Promise(function (resolve, reject) {
+        $('ul#friends-added').append(html);
+        $('#groupChatModal .list-user-added').show();
+        resolve(true);
+      });
+      promise.then(function (success) {
+        $('ul#group-chat-friends')
+          .find('div[data-uid=' + uid + ']')
+          .remove();
+      });
     });
-    promise.then(function(success) {
-      $('ul#group-chat-friends').find('div[data-uid=' + uid + ']').remove();
-    });
-  });
 }
 
 function cancelCreateGroup() {
-  $('#cancel-group-chat').bind('click', function() {
+  $('#cancel-group-chat').bind('click', function () {
     $('#groupChatModal .list-user-added').hide();
     if ($('ul#friends-added>li').length) {
-      $('ul#friends-added>li').each(function(index) {
+      $('ul#friends-added>li').each(function (index) {
         $(this).remove();
       });
     }
   });
 }
 
-$(document).ready(function() {
+function flashMasterNotify() {
+  const notify = $('.master-success-message').text();
+
+  if (notify.length) {
+    alertify.notify(notify, 'success', 7);
+  }
+}
+
+$(document).ready(function () {
   // Hide số thông báo trên đầu icon mở modal contact
   showModalContacts();
 
@@ -154,7 +172,7 @@ $(document).ready(function() {
   nineScrollRight();
 
   // Bật emoji, tham số truyền vào là id của box nhập nội dung tin nhắn
-  enableEmojioneArea("17071995");
+  enableEmojioneArea('17071995');
 
   // Icon loading khi chạy ajax
   ajaxLoading();
@@ -171,4 +189,7 @@ $(document).ready(function() {
 
   // Action hủy việc tạo nhóm trò chuyện
   cancelCreateGroup();
+
+  // Flash message ở màn hình master
+  flashMasterNotify();
 });
