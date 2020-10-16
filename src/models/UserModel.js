@@ -17,7 +17,7 @@ const UserSchema = new Schema({
     verifyToken: String,
   },
   facebook: {
-    uuid: String,
+    uid: String,
     token: String,
     email: {
       type: String,
@@ -63,6 +63,9 @@ UserSchema.statics = {
   },
   findUserById(id) {
     return this.findById(id).exec();
+  },
+  findByFacebookUid(uid) {
+    return this.findOne({ 'facebook.uid': uid }).exec();
   },
 };
 
