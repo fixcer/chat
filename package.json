@@ -31,12 +31,14 @@
     "nodemailer": "^6.4.14",
     "nodemon": "^2.0.4",
     "passport": "^0.4.1",
+    "passport-facebook": "^3.0.0",
     "passport-local": "^1.0.0",
     "uuid": "^8.3.1"
   },
   "devDependencies": {
     "babel-cli": "^6.26.0",
     "babel-preset-env": "^1.7.0",
-    "browser-sync": "^2.26.12"
+    "browser-sync": "^2.26.12",
+    "pem": "^1.14.4"
   }
 }
