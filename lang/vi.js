@@ -13,6 +13,8 @@ export const transErrors = {
   token_undefined: 'Token không tồn tại',
   login_failed: 'Tài khoản hoặc mật khẩu không chính xác.',
   server_error: 'Server đang gặp sự cố, vui lòng thử lại sau.',
+  avatar_type: 'Định dạng file không hợp lệ',
+  avatar_size: 'Kích thước ảnh vượt quá giới hạn cho phép',
 };
 
 export const transSuccess = {
@@ -24,6 +26,7 @@ export const transSuccess = {
     return `Xin chào ${username}, chúc bạn một ngày tốt lành.`;
   },
   logout_success: 'Hẹn gặp lại bạn.',
+  avatar_updated: 'Cập nhật ảnh đại diện thành công.',
 };
 
 export const transEmail = {

@@ -1,5 +1,5 @@
 import express from 'express';
-import { auth, home } from '../controllers/index';
+import { auth, home, user } from '../controllers/index';
 import { authValid } from '../validation/index';
 import passport from 'passport';
 import initialPassportLocal from '../controllers/passportController/local';
@@ -66,6 +66,8 @@ const initialRoutes = (app) => {
       failureRedirect: '/auth',
     })
   );
+
+  router.put('/user/update-avatar', auth.checkLoggedIn, user.updateAvatar);
 
   return app.use('/', router);
 };
