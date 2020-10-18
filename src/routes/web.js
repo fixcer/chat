@@ -1,6 +1,6 @@
 import express from 'express';
 import { auth, home, user } from '../controllers/index';
-import { authValid } from '../validation/index';
+import { authValid, userValid } from '../validation/index';
 import passport from 'passport';
 import initialPassportLocal from '../controllers/passportController/local';
 import initialPassportFacebook from '../controllers/passportController/facebook';
@@ -68,6 +68,12 @@ const initialRoutes = (app) => {
   );
 
   router.put('/user/update-avatar', auth.checkLoggedIn, user.updateAvatar);
+  router.put(
+    '/user/update-info',
+    auth.checkLoggedIn,
+    userValid.updateInfo,
+    user.updateInfo
+  );
 
   return app.use('/', router);
 };
