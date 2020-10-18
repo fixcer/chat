@@ -6,74 +6,75 @@ import bodyParser from 'body-parser';
 import connectFlash from 'connect-flash';
 import configSession from './config/session';
 import passport from 'passport';
-import pem from 'pem';
-import https from 'https';
 
 const HOST = 'localhost';
 const PORT = 8000;
 
-pem.createCertificate({ days: 1, selfSigned: true }, (err, keys) => {
-  if (err) {
-    throw err;
-  }
+// Initial app
+const app = express();
 
-  // Initial app
-  const app = express();
+// Connect to MongoDB
+ConnectDB();
 
-  // Connect to MongoDB
-  ConnectDB();
+// Config session
+configSession(app);
 
-  // Config session
-  configSession(app);
+// Config view engine
+configViewEngine(app);
 
-  // Config view engine
-  configViewEngine(app);
+// Enable post data for request
+app.use(bodyParser.urlencoded({ extended: true }));
 
-  // Enable post data for request
-  app.use(bodyParser.urlencoded({ extended: true }));
+// Enable flash message
+app.use(connectFlash());
 
-  // Enable flash message
-  app.use(connectFlash());
+// Config passport JS
+app.use(passport.initialize());
+app.use(passport.session());
 
-  // Config passport JS
-  app.use(passport.initialize());
-  app.use(passport.session());
+// Initial all routes
+initialRoutes(app);
 
-  // Initial all routes
-  initialRoutes(app);
-
-  https
-    .createServer({ key: keys.serviceKey, cert: keys.certificate }, app)
-    .listen(PORT, HOST, () => {
-      console.log(`Hello Fixcer, i'm running at ${HOST}:${PORT}/`);
-    });
+app.listen(PORT, HOST, () => {
+  console.log(`Hello Fixcer, i'm running at ${HOST}:${PORT}/`);
 });
 
-// // Initial app
-// const app = express();
+// import pem from 'pem';
+// import https from 'https';
 
-// // Connect to MongoDB
-// ConnectDB();
+// pem.createCertificate({ days: 1, selfSigned: true }, (err, keys) => {
+//   if (err) {
+//     throw err;
+//   }
 
-// // Config session
-// configSession(app);
+//   // Initial app
+//   const app = express();
 
-// // Config view engine
-// configViewEngine(app);
+//   // Connect to MongoDB
+//   ConnectDB();
 
-// // Enable post data for request
-// app.use(bodyParser.urlencoded({ extended: true }));
+//   // Config session
+//   configSession(app);
 
-// // Enable flash message
-// app.use(connectFlash());
+//   // Config view engine
+//   configViewEngine(app);
 
-// // Config passport JS
-// app.use(passport.initialize());
-// app.use(passport.session());
+//   // Enable post data for request
+//   app.use(bodyParser.urlencoded({ extended: true }));
 
-// // Initial all routes
-// initialRoutes(app);
+//   // Enable flash message
+//   app.use(connectFlash());
 
-// app.listen(PORT, HOST, () => {
-//   console.log(`Hello Fixcer, i'm running at ${HOST}:${PORT}/`);
+//   // Config passport JS
+//   app.use(passport.initialize());
+//   app.use(passport.session());
+
+//   // Initial all routes
+//   initialRoutes(app);
+
+//   https
+//     .createServer({ key: keys.serviceKey, cert: keys.certificate }, app)
+//     .listen(PORT, HOST, () => {
+//       console.log(`Hello Fixcer, i'm running at ${HOST}:${PORT}/`);
+//     });
 // });
