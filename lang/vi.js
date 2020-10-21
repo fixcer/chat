@@ -8,6 +8,7 @@ export const transValidation = {
   update_gender: 'Just for fun!!!',
   update_address: 'Địa chỉ không hợp lệ',
   update_phone: 'Số điện thoại không hợp lệ',
+  keyword_find_users: 'Từ khóa tìm kiếm không hợp lệ.',
 };
 
 export const transErrors = {
