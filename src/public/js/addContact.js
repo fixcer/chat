@@ -11,6 +11,8 @@ function addContact() {
           .css('display', 'inline-block');
 
         increaseNumberOfNotificationContact('count-request-contact-sent');
+
+        socket.emit('add-new-contact', { contactId: targetId });
       }
     });
   });
