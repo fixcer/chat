@@ -20,6 +20,19 @@ ContactSchema.statics = {
       $or: [{ userId: userId }, { contactId: userId }],
     }).exec();
   },
+  checkExist(userId, contactId) {
+    return this.findOne({
+      $or: [
+        { $and: [{ userId: userId }, { contactId: contactId }] },
+        { $and: [{ contactId: contactId }, { userId: userId }] },
+      ],
+    }).exec();
+  },
+  removeRequestContact(userId, contactId) {
+    return this.deleteMany({
+      $and: [{ userId: userId }, { contactId: contactId }],
+    }).exec();
+  },
 };
 
 module.exports = mongoose.model('contact', ContactSchema);
