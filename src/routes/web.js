@@ -1,6 +1,6 @@
 import express from 'express';
-import { auth, home, user } from '../controllers/index';
-import { authValid, userValid } from '../validation/index';
+import { auth, home, user, contact } from '../controllers/index';
+import { authValid, userValid, contactValid } from '../validation/index';
 import passport from 'passport';
 import initialPassportLocal from '../controllers/passportController/local';
 import initialPassportFacebook from '../controllers/passportController/facebook';
@@ -79,6 +79,12 @@ const initialRoutes = (app) => {
     auth.checkLoggedIn,
     userValid.updatePassword,
     user.updatePassword
+  );
+  router.get(
+    '/contact/find-users/:keyword',
+    auth.checkLoggedIn,
+    contactValid.findUsersContact,
+    contact.findUsersContact
   );
 
   return app.use('/', router);
