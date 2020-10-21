@@ -11,19 +11,21 @@ export const transValidation = {
 };
 
 export const transErrors = {
-  email_in_use: 'Email đã được sử dụng',
-  account_removed: 'Tài khoản đã bị xóa',
-  account_not_active: 'Tài khoản chưa được kích hoạt',
-  token_undefined: 'Token không tồn tại',
+  email_in_use: 'Email đã được sử dụng.',
+  account_removed: 'Tài khoản đã bị xóa.',
+  account_not_active: 'Tài khoản chưa được kích hoạt.',
+  account_undefined: 'Tài khoản không tồn tại.',
+  token_undefined: 'Token không tồn tại.',
   login_failed: 'Tài khoản hoặc mật khẩu không chính xác.',
   server_error: 'Server đang gặp sự cố, vui lòng thử lại sau.',
-  avatar_type: 'Định dạng file không hợp lệ',
-  avatar_size: 'Kích thước ảnh vượt quá giới hạn cho phép',
+  avatar_type: 'Định dạng file không hợp lệ.',
+  avatar_size: 'Kích thước ảnh vượt quá giới hạn cho phép.',
+  user_current_password_failed: 'Mật khẩu hiện tại không chính xác',
 };
 
 export const transSuccess = {
   userCreated: (userEmail) => {
-    return `Tài khoản <strong>${userEmail}</strong> đã được tạo. Vui lòng kiểm tra email để kích hoạt tài khoản`;
+    return `Tài khoản <strong>${userEmail}</strong> đã được tạo. Vui lòng kiểm tra email để kích hoạt tài khoản.`;
   },
   account_active: 'Kích hoạt tài khoản thành công.',
   login_success: (username) => {
@@ -31,6 +33,7 @@ export const transSuccess = {
   },
   logout_success: 'Hẹn gặp lại bạn.',
   user_info_updated: 'Cập nhật thông tin thành công.',
+  user_password_updated: 'Cập nhật mật khẩu thành công.',
 };
 
 export const transEmail = {

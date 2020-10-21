@@ -187,16 +187,19 @@
           </div>
           <div id="password-profile" class="tab-pane fade">
             <div class="col-md-9 personal-info">
-              <div class="alert alert-danger alert-dismissable">
+              <br>
+              <div class="alert alert-danger alert-dismissable user-modal-password-alert-error">
                 <a class="panel-close close" data-dismiss="alert">×</a>
-                Update password error example<br />
-                <!-- <script>openProfilePasswordModal();</script> -->
+                <span>
+                  Update password error example
+                </span>
               </div>
 
-              <div class="alert alert-success alert-dismissable">
+              <div class="alert alert-success alert-dismissable user-modal-password-alert-success">
                 <a class="panel-close close" data-dismiss="alert">×</a>
-                Update password success example<br />
-                <!-- <script>openProfilePasswordModal();</script> -->
+                <span>
+                  Update password success example
+                </span>
               </div>
 
               <h3>Thay đổi mật khẩu</h3>
@@ -206,10 +209,11 @@
                   <label class="col-md-4 control-label">Mật khẩu cũ</label>
                   <div class="col-md-8">
                     <input
+                      id="input-change-current-password"
                       class="form-control"
                       type="password"
                       name="current_password"
-                      placeholder="Enter your curent password..."
+                      placeholder="Nhập mật khẩu hiện tại của bạn"
                     />
                   </div>
                 </div>
@@ -217,10 +221,11 @@
                   <label class="col-md-4 control-label">Mật khẩu mới</label>
                   <div class="col-md-8">
                     <input
+                      id="input-change-new-password"
                       class="form-control"
                       type="password"
                       name="new_password"
-                      placeholder="Enter new password..."
+                      placeholder="Nhập mật khẩu mới"
                     />
                   </div>
                 </div>
@@ -230,10 +235,11 @@
                   >
                   <div class="col-md-8">
                     <input
+                      id="input-change-confirm-new-password"
                       class="form-control"
                       type="password"
                       name="confirm_new_password"
-                      placeholder="Enter confirm new password..."
+                      placeholder="Xác nhận lại mật khẩu mới"
                     />
                   </div>
                 </div>
@@ -242,12 +248,14 @@
                   <div class="col-md-8">
                     <input
                       type="button"
+                      id="input-btn-update-user-password"
                       class="btn btn-primary custom-background-btn-primary"
                       value="Lưu lại"
                     />
                     <span></span>
                     <input
-                      type="reset"
+                      type="button"
+                      id="input-btn-cancel-update-user-password"
                       class="btn btn-default custom-background-btn-reset"
                       value="Hủy bỏ"
                     />
