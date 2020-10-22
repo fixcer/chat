@@ -1,7 +1,9 @@
-import addNewContact from './contact/addNewContact';
+import addContact from './contact/addContact';
+import removeRequestContact from './contact/removeRequestContact';
 
 const initSockets = (io) => {
-  addNewContact(io);
+  addContact(io);
+  removeRequestContact(io);
 };
 
 export default initSockets;
