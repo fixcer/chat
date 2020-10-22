@@ -17,7 +17,7 @@ const sessionStore = new MongoStore({
  * Config session for app
  * @param app from exactly express module
  */
-const configSession = (app) => {
+const config = (app) => {
   app.use(
     session({
       key: 'express.sid',
@@ -32,4 +32,4 @@ const configSession = (app) => {
   );
 };
 
-export default configSession;
+export default { config, sessionStore };
