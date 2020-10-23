@@ -46,11 +46,11 @@ function enableEmojioneArea(chatId) {
 }
 
 function spinLoaded() {
-  $('#loader').css('display', 'none');
+  $('.index-loader').css('display', 'none');
 }
 
 function spinLoading() {
-  $('#loader').css('display', 'block');
+  $('.index-loader').css('display', 'block');
 }
 
 function ajaxLoading() {
