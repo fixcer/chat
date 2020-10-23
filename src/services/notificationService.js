@@ -27,4 +27,18 @@ const getNotifications = (currentUserId, limit = 10) => {
   });
 };
 
-export default { getNotifications };
+const countNotifyUnread = (currentUserId) => {
+  return new Promise(async (resolve, reject) => {
+    try {
+      const notificationsUnread = await NotificationModel.model.countNotifyUnread(
+        currentUserId
+      );
+
+      resolve(notificationsUnread);
+    } catch (error) {
+      reject(error);
+    }
+  });
+};
+
+export default { getNotifications, countNotifyUnread };
