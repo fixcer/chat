@@ -51,17 +51,17 @@
             id="show-modal-contacts"
           >
             <i class="fa fa-user-plus"></i>
-            <% if (notifications.length) { %>
-              <div class="noti_contact_counter"><%= notifications.length %></div>
-            <% } else { %>
-              <div class="noti_contact_counter display-none"></div>
-            <% } %>
+              <div class="noti_contact_counter"></div>
           </a>
         </li>
         <li>
           <a href="#" id="noti_Button" data-toggle="modal" title="Thông báo">
             <i class="fa fa-globe"></i>
-            <div class="noti_counter"></div>
+            <% if (notifications.length) { %>
+            <div class="noti_counter"><%= notifications.length %></div>
+            <% } else { %>
+              <div class="noti_counter display-none"></div>
+            <% } %>
             <div id="noti_Container">
               <div id="notifications">
                 <h3>Đánh dấu tất cả là đã đọc</h3>
