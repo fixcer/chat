@@ -1,5 +1,5 @@
 import express from 'express';
-import { auth, home, user, contact } from '../controllers/index';
+import { auth, home, user, contact, notification } from '../controllers/index';
 import { authValid, userValid, contactValid } from '../validation/index';
 import passport from 'passport';
 import initialPassportLocal from '../controllers/passportController/local';
@@ -92,6 +92,12 @@ const initialRoutes = (app) => {
     '/contact/remove-request-contact',
     auth.checkLoggedIn,
     contact.removeRequestContact
+  );
+
+  router.get(
+    '/notification/read-more',
+    auth.checkLoggedIn,
+    notification.readMore
   );
 
   return app.use('/', router);
