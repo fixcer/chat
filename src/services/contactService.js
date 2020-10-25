@@ -3,6 +3,8 @@ import UserModel from '../models/UserModel';
 import NotificationModel from '../models/NotificationModel';
 import _ from 'lodash';
 
+const LIMIT_NOTIFY_TAKEN = 10;
+
 const findUsersContact = (currentUserId, keyword) => {
   return new Promise(async (resolve, reject) => {
     let deprecatedUserIds = [currentUserId];
@@ -69,4 +71,72 @@ const removeRequestContact = (currentUserId, contactId) => {
   });
 };
 
-export default { findUsersContact, addNew, removeRequestContact };
+const getContacts = (currentUserId) => {
+  return new Promise(async (resolve, reject) => {
+    try {
+      const contacts = await ContactModel.getContacts(
+        currentUserId,
+        LIMIT_NOTIFY_TAKEN
+      );
+
+      const users = await contacts.map(async (contact) => {
+        if (contact.contactId == currentUserId) {
+          return await UserModel.findUserById(contact.userId);
+        } else {
+          return await UserModel.findUserById(contact.contactId);
+        }
+      });
+
+      resolve(await Promise.all(users));
+    } catch (error) {
+      reject(error);
+    }
+  });
+};
+
+const getContactsSent = (currentUserId) => {
+  return new Promise(async (resolve, reject) => {
+    try {
+      const contacts = await ContactModel.getContactsSent(
+        currentUserId,
+        LIMIT_NOTIFY_TAKEN
+      );
+
+      const users = await contacts.map(async (contact) => {
+        return await UserModel.findUserById(contact.contactId);
+      });
+
+      resolve(await Promise.all(users));
+    } catch (error) {
+      reject(error);
+    }
+  });
+};
+
+const getContactsReceived = (currentUserId) => {
+  return new Promise(async (resolve, reject) => {
+    try {
+      const contacts = await ContactModel.getContactsReceived(
+        currentUserId,
+        LIMIT_NOTIFY_TAKEN
+      );
+
+      const users = await contacts.map(async (contact) => {
+        return await UserModel.findUserById(contact.userId);
+      });
+
+      resolve(await Promise.all(users));
+    } catch (error) {
+      reject(error);
+    }
+  });
+};
+
+export default {
+  findUsersContact,
+  addNew,
+  removeRequestContact,
+  getContacts,
+  getContactsSent,
+  getContactsReceived,
+};
