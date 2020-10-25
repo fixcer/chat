@@ -33,6 +33,6 @@ socket.on('response-remove-request-contact', function (user) {
     .parent()
     .remove();
   decreaseNumberOfNotificationContact('count-request-contact-received');
-  decreaseNumberOfNotification('noti_contact_counter');
-  decreaseNumberOfNotification('noti_counter');
+  decreaseNumberOfNotification('noti_contact_counter', 1);
+  decreaseNumberOfNotification('noti_counter', 1);
 });

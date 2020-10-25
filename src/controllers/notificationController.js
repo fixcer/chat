@@ -1,4 +1,3 @@
-import { notification } from '.';
 import { notificationService } from '../services/index';
 
 const readMore = async (req, res) => {
@@ -14,4 +13,17 @@ const readMore = async (req, res) => {
   }
 };
 
-export default { readMore };
+const markAllAsRead = async (req, res) => {
+  try {
+    const mark = await notificationService.markAllAsRead(
+      req.user._id,
+      req.body.targetUsers
+    );
+
+    return res.status(200).send(mark);
+  } catch (error) {
+    return res.status(500).send(error);
+  }
+};
+
+export default { readMore, markAllAsRead };

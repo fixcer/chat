@@ -69,4 +69,16 @@ const readMore = (currentUserId, skipNumberNotify) => {
   });
 };
 
-export default { getNotifications, countNotifyUnread, readMore };
+const markAllAsRead = (currentUserId, targetUsers) => {
+  return new Promise(async (resolve, reject) => {
+    try {
+      await NotificationModel.model.markAllAsRead(currentUserId, targetUsers);
+      resolve(true);
+    } catch (error) {
+      console.log(error);
+      reject(false);
+    }
+  });
+};
+
+export default { getNotifications, countNotifyUnread, readMore, markAllAsRead };

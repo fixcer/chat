@@ -27,6 +27,6 @@ socket.on('response-add-new-contact', function (user) {
   $('.noti_content').prepend(notify);
   $('ul.list-notifications').prepend(`<li>${notify}</li>`);
   increaseNumberOfNotificationContact('count-request-contact-received');
-  increaseNumberOfNotification('noti_contact_counter');
-  increaseNumberOfNotification('noti_counter');
+  increaseNumberOfNotification('noti_contact_counter', 1);
+  increaseNumberOfNotification('noti_counter', 1);
 });
