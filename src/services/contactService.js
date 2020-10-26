@@ -132,6 +132,39 @@ const getContactsReceived = (currentUserId) => {
   });
 };
 
+const countContacts = (currentUserId) => {
+  return new Promise(async (resolve, reject) => {
+    try {
+      const count = await ContactModel.countContacts(currentUserId);
+      resolve(count);
+    } catch (error) {
+      reject(error);
+    }
+  });
+};
+
+const countContactsSent = (currentUserId) => {
+  return new Promise(async (resolve, reject) => {
+    try {
+      const count = await ContactModel.countContactsSent(currentUserId);
+      resolve(count);
+    } catch (error) {
+      reject(error);
+    }
+  });
+};
+
+const countContactsReceived = (currentUserId) => {
+  return new Promise(async (resolve, reject) => {
+    try {
+      const count = await ContactModel.countContactsReceived(currentUserId);
+      resolve(count);
+    } catch (error) {
+      reject(error);
+    }
+  });
+};
+
 export default {
   findUsersContact,
   addNew,
@@ -139,4 +172,7 @@ export default {
   getContacts,
   getContactsSent,
   getContactsReceived,
+  countContacts,
+  countContactsSent,
+  countContactsReceived,
 };

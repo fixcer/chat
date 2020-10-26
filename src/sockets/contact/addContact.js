@@ -19,6 +19,10 @@ const addContact = (io) => {
         id: socket.request.user._id,
         username: socket.request.user.username,
         avatar: socket.request.user.avatar,
+        address:
+          socket.request.user.address !== null
+            ? socket.request.user.address
+            : '',
       };
 
       if (clients[data.contactId]) {

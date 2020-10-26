@@ -14,6 +14,14 @@ const getHome = async (req, res) => {
     req.user._id
   );
 
+  const countContacts = await contactService.countContacts(req.user._id);
+  const countContactsSent = await contactService.countContactsSent(
+    req.user._id
+  );
+  const countContactsReceived = await contactService.countContactsReceived(
+    req.user._id
+  );
+
   return res.render('main/home/index', {
     errors: req.flash('errors'),
     success: req.flash('success'),
@@ -23,6 +31,9 @@ const getHome = async (req, res) => {
     contacts,
     contactsSent,
     contactsReceived,
+    countContacts,
+    countContactsSent,
+    countContactsReceived,
   });
 };
 

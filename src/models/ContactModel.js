@@ -57,6 +57,21 @@ ContactSchema.statics = {
       .limit(limit)
       .exec();
   },
+  countContacts(userId) {
+    return this.countDocuments({
+      $and: [{ $or: [{ userId }, { contactId: userId }] }, { status: true }],
+    }).exec();
+  },
+  countContactsSent(userId) {
+    return this.countDocuments({
+      $and: [{ userId }, { status: false }],
+    }).exec();
+  },
+  countContactsReceived(userId) {
+    return this.countDocuments({
+      $and: [{ contactId: userId }, { status: false }],
+    }).exec();
+  },
 };
 
 module.exports = mongoose.model('contact', ContactSchema);
