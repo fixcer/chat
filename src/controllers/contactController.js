@@ -39,6 +39,18 @@ const addNew = async (req, res) => {
   }
 };
 
+const removeContact = async (req, res) => {
+  try {
+    let currentUserId = req.user._id;
+    let contactId = req.body.uid;
+
+    let removed = await contactService.removeContact(currentUserId, contactId);
+    return res.status(200).send({ success: !!removed });
+  } catch (error) {
+    return res.status(500).send(error);
+  }
+};
+
 const removeRequestContactSent = async (req, res) => {
   try {
     let currentUserId = req.user._id;
@@ -129,6 +141,7 @@ const readMoreContactsReceived = async (req, res) => {
 export default {
   findUsersContact,
   addNew,
+  removeContact,
   removeRequestContactSent,
   approveRequestContactReceived,
   removeRequestContactReceived,

@@ -51,6 +51,18 @@ const addNew = (currentUserId, contactId) => {
   });
 };
 
+const removeContact = (currentUserId, contactId) => {
+  return new Promise(async (resolve, reject) => {
+    const removed = await ContactModel.removeContact(currentUserId, contactId);
+
+    if (removed.n === 0) {
+      return reject(false);
+    }
+
+    resolve(true);
+  });
+};
+
 const removeRequestContactSent = (currentUserId, contactId) => {
   return new Promise(async (resolve, reject) => {
     let removed = await ContactModel.removeRequestContactSent(
@@ -270,6 +282,7 @@ const readMoreContactsReceived = (currentUserId, skipNumberContacts) => {
 export default {
   findUsersContact,
   addNew,
+  removeContact,
   removeRequestContactSent,
   approveRequestContactReceived,
   removeRequestContactReceived,

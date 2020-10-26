@@ -89,6 +89,11 @@ const initialRoutes = (app) => {
   );
   router.post('/contact/add-new', auth.checkLoggedIn, contact.addNew);
   router.delete(
+    '/contact/remove-contact',
+    auth.checkLoggedIn,
+    contact.removeContact
+  );
+  router.delete(
     '/contact/remove-request-contact-sent',
     auth.checkLoggedIn,
     contact.removeRequestContactSent
