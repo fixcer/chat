@@ -19,6 +19,10 @@ function removeRequestContact() {
 
           decreaseNumberOfNotificationContact('count-request-contact-sent');
 
+          $('#request-contact-sent')
+            .find(`li[data-uid = ${targetId}]`)
+            .remove();
+
           socket.emit('remove-request-contact', { contactId: targetId });
         }
       },
@@ -32,6 +36,9 @@ socket.on('response-remove-request-contact', function (user) {
     .find(`li>div[data-uid = ${user.id}]`)
     .parent()
     .remove();
+
+  $('#request-contact-received').find(`li[data-uid = ${user.id}]`).remove();
+
   decreaseNumberOfNotificationContact('count-request-contact-received');
   decreaseNumberOfNotification('noti_contact_counter', 1);
   decreaseNumberOfNotification('noti_counter', 1);
