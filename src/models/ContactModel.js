@@ -28,7 +28,7 @@ ContactSchema.statics = {
       ],
     }).exec();
   },
-  removeRequestContact(userId, contactId) {
+  removeRequestContactSent(userId, contactId) {
     return this.deleteMany({
       $and: [{ userId: userId }, { contactId: contactId }],
     }).exec();

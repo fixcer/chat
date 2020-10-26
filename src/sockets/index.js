@@ -1,9 +1,9 @@
 import addContact from './contact/addContact';
-import removeRequestContact from './contact/removeRequestContact';
+import removeRequestContactSent from './contact/removeRequestContactSent';
 
 const initSockets = (io) => {
   addContact(io);
-  removeRequestContact(io);
+  removeRequestContactSent(io);
 };
 
 export default initSockets;
