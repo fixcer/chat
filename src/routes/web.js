@@ -93,6 +93,11 @@ const initialRoutes = (app) => {
     auth.checkLoggedIn,
     contact.removeRequestContactSent
   );
+  router.delete(
+    '/contact/remove-request-contact-received',
+    auth.checkLoggedIn,
+    contact.removeRequestContactReceived
+  );
   router.get(
     '/contact/read-more-contacts',
     auth.checkLoggedIn,
