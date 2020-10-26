@@ -12,7 +12,9 @@ const getNotifications = (currentUserId) => {
       );
 
       const notifyContents = notifications.map(async (notification) => {
-        const sender = await UserModel.findUserById(notification.senderId);
+        const sender = await UserModel.getNormalUserDataById(
+          notification.senderId
+        );
         return NotificationModel.contents.getContent(
           notification.type,
           notification.isRead,
@@ -52,7 +54,9 @@ const readMore = (currentUserId, skipNumberNotify) => {
       );
 
       const notifyContents = newNotifications.map(async (notification) => {
-        const sender = await UserModel.findUserById(notification.senderId);
+        const sender = await UserModel.getNormalUserDataById(
+          notification.senderId
+        );
         return NotificationModel.contents.getContent(
           notification.type,
           notification.isRead,
