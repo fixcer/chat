@@ -51,9 +51,9 @@ const addNew = (currentUserId, contactId) => {
   });
 };
 
-const removeRequestContact = (currentUserId, contactId) => {
+const removeRequestContactSent = (currentUserId, contactId) => {
   return new Promise(async (resolve, reject) => {
-    let removed = await ContactModel.removeRequestContact(
+    let removed = await ContactModel.removeRequestContactSent(
       currentUserId,
       contactId
     );
@@ -62,7 +62,7 @@ const removeRequestContact = (currentUserId, contactId) => {
       return reject(false);
     }
 
-    await NotificationModel.model.removeRequestContactNotification(
+    await NotificationModel.model.removeRequestContactSentNotification(
       currentUserId,
       contactId,
       NotificationModel.types.ADD_CONTACT
@@ -232,7 +232,7 @@ const readMoreContactsReceived = (currentUserId, skipNumberContacts) => {
 export default {
   findUsersContact,
   addNew,
-  removeRequestContact,
+  removeRequestContactSent,
   getContacts,
   getContactsSent,
   getContactsReceived,

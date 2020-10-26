@@ -33,7 +33,7 @@ $(document).ready(function () {
                       user.address !== null ? user.address : ''
                     }</span>
                   </div>
-                  <div class="user-remove-request-sent action-danger" data-uid="${
+                  <div class="user-remove-request-contact-sent action-danger display-important" data-uid="${
                     user._id
                   }">
                     Hủy yêu cầu
@@ -42,6 +42,8 @@ $(document).ready(function () {
               </li>`
             );
         });
+
+        removeRequestContactSent();
         $('#link-read-more-contacts-sent').css('display', 'inline-block');
         $('.read-more-contacts-sent-loader').css('display', 'none');
       }
