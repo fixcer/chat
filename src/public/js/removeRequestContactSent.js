@@ -21,6 +21,7 @@ function removeRequestContactSent() {
               )
               .hide();
 
+            decreaseNumberOfNotification('noti_contact_counter', 1);
             decreaseNumberOfNotificationContact('count-request-contact-sent');
 
             $('#request-contact-sent')
