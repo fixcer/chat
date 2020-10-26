@@ -30,12 +30,20 @@ ContactSchema.statics = {
   },
   removeRequestContactSent(userId, contactId) {
     return this.deleteMany({
-      $and: [{ userId: userId }, { contactId: contactId }],
+      $and: [{ userId: userId }, { contactId: contactId }, { status: false }],
     }).exec();
+  },
+  approveRequestContactReceived(userId, contactId) {
+    return this.update(
+      {
+        $and: [{ userId: contactId }, { contactId: userId }, { status: false }],
+      },
+      { status: true }
+    ).exec();
   },
   removeRequestContactReceived(userId, contactId) {
     return this.deleteMany({
-      $and: [{ userId: contactId }, { contactId: userId }],
+      $and: [{ userId: contactId }, { contactId: userId }, { status: false }],
     }).exec();
   },
   getContacts(userId, limit) {

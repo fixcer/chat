@@ -98,6 +98,11 @@ const initialRoutes = (app) => {
     auth.checkLoggedIn,
     contact.removeRequestContactReceived
   );
+  router.put(
+    '/contact/approve-request-contact-received',
+    auth.checkLoggedIn,
+    contact.approveRequestContactReceived
+  );
   router.get(
     '/contact/read-more-contacts',
     auth.checkLoggedIn,

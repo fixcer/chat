@@ -71,6 +71,22 @@ const removeRequestContactReceived = async (req, res) => {
   }
 };
 
+const approveRequestContactReceived = async (req, res) => {
+  try {
+    let currentUserId = req.user._id;
+    let contactId = req.body.uid;
+
+    let approved = await contactService.approveRequestContactReceived(
+      currentUserId,
+      contactId
+    );
+
+    return res.status(200).send({ success: !!approved });
+  } catch (error) {
+    return res.status(500).send(error);
+  }
+};
+
 const readMoreContacts = async (req, res) => {
   try {
     const skipNumberContacts = +req.query.skipNumber;
@@ -114,6 +130,7 @@ export default {
   findUsersContact,
   addNew,
   removeRequestContactSent,
+  approveRequestContactReceived,
   removeRequestContactReceived,
   readMoreContacts,
   readMoreContactsSent,
