@@ -17,6 +17,7 @@ function addContact() {
           .get(0).outerHTML;
 
         $('#request-contact-sent').find('ul').prepend(userInfo);
+        removeRequestContactSent();
 
         socket.emit('add-new-contact', { contactId: targetId });
       }
