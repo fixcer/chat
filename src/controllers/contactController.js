@@ -55,4 +55,50 @@ const removeRequestContact = async (req, res) => {
   }
 };
 
-export default { findUsersContact, addNew, removeRequestContact };
+const readMoreContacts = async (req, res) => {
+  try {
+    const skipNumberContacts = +req.query.skipNumber;
+    const contacts = await contactService.readMoreContacts(
+      req.user._id,
+      skipNumberContacts
+    );
+    return res.status(200).send(contacts);
+  } catch (error) {
+    return res.status(500).send(error);
+  }
+};
+
+const readMoreContactsSent = async (req, res) => {
+  try {
+    const skipNumberContacts = +req.query.skipNumber;
+    const contacts = await contactService.readMoreContactsSent(
+      req.user._id,
+      skipNumberContacts
+    );
+    return res.status(200).send(contacts);
+  } catch (error) {
+    return res.status(500).send(error);
+  }
+};
+
+const readMoreContactsReceived = async (req, res) => {
+  try {
+    const skipNumberContacts = +req.query.skipNumber;
+    const contacts = await contactService.readMoreContactsReceived(
+      req.user._id,
+      skipNumberContacts
+    );
+    return res.status(200).send(contacts);
+  } catch (error) {
+    return res.status(500).send(error);
+  }
+};
+
+export default {
+  findUsersContact,
+  addNew,
+  removeRequestContact,
+  readMoreContacts,
+  readMoreContactsSent,
+  readMoreContactsReceived,
+};
