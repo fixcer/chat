@@ -33,7 +33,7 @@ $(document).ready(function () {
                     user.address !== null ? user.address : ''
                   }</span>
                 </div>
-                <div class="user-acccept-contact-received" data-uid="${
+                <div class="user-approve-request-contact-received" data-uid="${
                   user._id
                 }">
                   Chấp nhận
@@ -48,6 +48,7 @@ $(document).ready(function () {
         });
 
         removeRequestContactReceived();
+        approveRequestContactReceived();
 
         $('#link-read-more-contacts-received').css('display', 'inline-block');
         $('.read-more-contacts-received-loader').css('display', 'none');
