@@ -50,11 +50,11 @@ ContactSchema.statics = {
     }).exec();
   },
   approveRequestContactReceived(userId, contactId) {
-    return this.update(
+    return this.updateOne(
       {
         $and: [{ userId: contactId }, { contactId: userId }, { status: false }],
       },
-      { status: true }
+      { status: true, updateAt: Date.now() }
     ).exec();
   },
   removeRequestContactReceived(userId, contactId) {
@@ -66,7 +66,7 @@ ContactSchema.statics = {
     return this.find({
       $and: [{ $or: [{ userId }, { contactId: userId }] }, { status: true }],
     })
-      .sort({ createAt: -1 })
+      .sort({ updateAt: -1 })
       .limit(limit)
       .exec();
   },
@@ -105,7 +105,7 @@ ContactSchema.statics = {
     return this.find({
       $and: [{ $or: [{ userId }, { contactId: userId }] }, { status: true }],
     })
-      .sort({ createAt: -1 })
+      .sort({ updateAt: -1 })
       .skip(skip)
       .limit(limit)
       .exec();
