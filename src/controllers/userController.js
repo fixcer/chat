@@ -51,7 +51,7 @@ let updateAvatar = (req, res) => {
       );
 
       //Remove old user avatar
-      await fsExtra.remove(`${app.avatar_directory}/${userUpdate.avatar}`);
+      // await fsExtra.remove(`${app.avatar_directory}/${userUpdate.avatar}`);
 
       let response = {
         message: transSuccess.user_info_updated,
