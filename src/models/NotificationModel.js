@@ -34,7 +34,7 @@ NotificationSchema.statics = {
   },
   readMore(userId, skip, limit) {
     return this.find({ receiverId: userId })
-      .sort({ createdAt: -1 })
+      .sort({ createAt: -1 })
       .skip(skip)
       .limit(limit)
       .exec();
