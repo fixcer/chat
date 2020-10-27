@@ -1,26 +1,29 @@
-import { notificationService, contactService } from '../services/index';
+import {
+  notificationService,
+  contactService,
+  messageService,
+} from '../services/index';
 
 const getHome = async (req, res) => {
-  const notifications = await notificationService.getNotifications(
-    req.user._id
-  );
-  const countNotifyUnread = await notificationService.countNotifyUnread(
-    req.user._id
-  );
+  const userId = req.user._id;
 
-  const contacts = await contactService.getContacts(req.user._id);
-  const contactsSent = await contactService.getContactsSent(req.user._id);
-  const contactsReceived = await contactService.getContactsReceived(
-    req.user._id
-  );
+  const notifications = await notificationService.getNotifications(userId);
+  const countNotifyUnread = await notificationService.countNotifyUnread(userId);
 
-  const countContacts = await contactService.countContacts(req.user._id);
-  const countContactsSent = await contactService.countContactsSent(
-    req.user._id
-  );
+  const contacts = await contactService.getContacts(userId);
+  const contactsSent = await contactService.getContactsSent(userId);
+  const contactsReceived = await contactService.getContactsReceived(userId);
+
+  const countContacts = await contactService.countContacts(userId);
+  const countContactsSent = await contactService.countContactsSent(userId);
   const countContactsReceived = await contactService.countContactsReceived(
-    req.user._id
+    userId
   );
+
+  const getConversations = await messageService.getAllConversationItems(userId);
+  const allConversations = getConversations.allConversations;
+  const userConversations = getConversations.userConversations;
+  const groupConversations = getConversations.groupConversations;
 
   return res.render('main/home/index', {
     errors: req.flash('errors'),
@@ -34,6 +37,9 @@ const getHome = async (req, res) => {
     countContacts,
     countContactsSent,
     countContactsReceived,
+    allConversations,
+    userConversations,
+    groupConversations,
   });
 };
 
