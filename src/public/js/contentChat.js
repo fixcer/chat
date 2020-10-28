@@ -22,23 +22,29 @@ function contentChat(divId) {
         }
 
         $.post('/message/add-new-pure', dataPureForSend, function (data) {
+          let dataToEmit = {
+            message: data.message,
+          };
+
           let messageOfMe = $(
             `<div class="bubble me" data-mess-id="${data.message._id}"></div>`
           );
 
+          messageOfMe.text(data.message.text);
+          let convertEmojiMessage = emojione.toImage(messageOfMe.html());
+
           if (dataPureForSend.isChatGroup) {
             messageOfMe.html(
-              `<img src="images/users/${data.message.sender.avatar}" class="avatar-small" title="${data.message.sender.name}" />`
+              `<img src="images/users/${data.message.sender.avatar}" class="avatar-small" title="${data.message.sender.name}" />
+              ${convertEmojiMessage}`
             );
-            messageOfMe.text(data.message.text);
 
             increaseNumberMessageGroup(divId);
+            dataToEmit.groupId = targetId;
           } else {
-            messageOfMe.text(data.message.text);
+            messageOfMe.html(convertEmojiMessage);
+            dataToEmit.contactId = targetId;
           }
-
-          let convertEmojiMessage = emojione.toImage(messageOfMe.html());
-          messageOfMe.html(convertEmojiMessage);
 
           //Append message
           $(`.right .chat[data-chat = ${divId}]`).append(messageOfMe);
@@ -51,6 +57,7 @@ function contentChat(divId) {
           //Update leftSlide
           $(`.person[data-chat = ${divId}]`)
             .find('span.time')
+            .removeClass('new-message')
             .html(
               moment(data.message.createAt)
                 .locale('vi')
@@ -61,18 +68,21 @@ function contentChat(divId) {
             .find('span.preview')
             .html(emojione.toImage(data.message.text));
 
-          // Move convsersation to top
+          // Move conversation to top
           $(`.person[data-chat = ${divId}]`).on(
-            'click.moveConversationToTheTop',
+            'clicked.moveConversationToTheTop',
             function () {
               let dataToMove = $(this).parent();
               $(this).closest('ul').prepend(dataToMove);
-              $(this).off('click.moveConversationToTheTop');
+              $(this).off('clicked.moveConversationToTheTop');
             }
           );
-          $(`.person[data-chat = ${divId}]`).click();
+          $(`.person[data-chat = ${divId}]`).trigger(
+            'clicked.moveConversationToTheTop'
+          );
 
           //Realtime
+          socket.emit('chat-pure', dataToEmit);
         }).fail(function (error) {
           error.responseJSON.forEach((err) => {
             alertify.notify(err, 'error', 7);
@@ -81,3 +91,66 @@ function contentChat(divId) {
       }
     });
 }
+
+$(document).ready(function () {
+  socket.on('response-chat-pure', function (response) {
+    let divId = '';
+
+    let messageOfYou = $(
+      `<div class="bubble you" data-mess-id="${response.message._id}"></div>`
+    );
+
+    messageOfYou.text(response.message.text);
+    let convertEmojiMessage = emojione.toImage(messageOfYou.html());
+
+    if (response.currentGroupId) {
+      messageOfYou.html(
+        `<img src="images/users/${response.message.sender.avatar}" class="avatar-small" title="${response.message.sender.name}" />
+        ${convertEmojiMessage}`
+      );
+
+      divId = response.currentGroupId;
+      if (response.currentUserId !== $('#dropdown-navbar-user').data('uid')) {
+        increaseNumberMessageGroup(divId);
+      }
+    } else {
+      divId = response.currentUserId;
+      messageOfYou.html(convertEmojiMessage);
+    }
+
+    //Append message
+    if (response.currentUserId !== $('#dropdown-navbar-user').data('uid')) {
+      $(`.right .chat[data-chat = ${divId}]`).append(messageOfYou);
+      nineScrollRight(divId);
+      $(`.person[data-chat = ${divId}]`)
+        .find('span.time')
+        .addClass('new-message');
+    }
+
+    //Update leftSlide
+    $(`.person[data-chat = ${divId}]`)
+      .find('span.time')
+      .html(
+        moment(response.message.createAt)
+          .locale('vi')
+          .startOf('seconds')
+          .fromNow()
+      );
+    $(`.person[data-chat = ${divId}]`)
+      .find('span.preview')
+      .html(emojione.toImage(response.message.text));
+
+    // Move conversation to top
+    $(`.person[data-chat = ${divId}]`).on(
+      'clicked.moveConversationToTheTop',
+      function () {
+        let dataToMove = $(this).parent();
+        $(this).closest('ul').prepend(dataToMove);
+        $(this).off('clicked.moveConversationToTheTop');
+      }
+    );
+    $(`.person[data-chat = ${divId}]`).trigger(
+      'clicked.moveConversationToTheTop'
+    );
+  });
+});

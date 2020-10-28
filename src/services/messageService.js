@@ -121,6 +121,10 @@ const addNewPure = (sender, receiverId, messageVal, isChatGroup) => {
         };
 
         const newMessage = await MessageModel.model.addNewPure(newMessageItem);
+        await ChatGroupModel.updateWhenHasNewMessage(
+          receiverExist._id,
+          receiverExist.messageAmount + 1
+        );
         resolve(newMessage);
       } else {
         const receiverExist = await UserModel.getNormalUserDataById(receiverId);
@@ -147,6 +151,10 @@ const addNewPure = (sender, receiverId, messageVal, isChatGroup) => {
         };
 
         const newMessage = await MessageModel.model.addNewPure(newMessageItem);
+        await ContactModel.updateWhenHasNewMessage(
+          sender.id,
+          receiverExist._id
+        );
         resolve(newMessage);
       }
     } catch (error) {
