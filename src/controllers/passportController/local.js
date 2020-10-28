@@ -70,7 +70,7 @@ const initialPassportLocal = () => {
   });
 
   passport.deserializeUser((id, done) => {
-    UserModal.findUserById(id)
+    UserModal.findUserByIdForSessionToUse(id)
       .then((user) => {
         return done(null, user);
       })
