@@ -22,6 +22,9 @@ ChatGroupSchema.statics = {
       .limit(limit)
       .exec();
   },
+  getChatGroupById(id) {
+    return this.findById(id).exec();
+  },
 };
 
 module.exports = mongoose.model('chat-group', ChatGroupSchema);

@@ -2,6 +2,8 @@ import ContactModel from '../models/ContactModel';
 import UserModel from '../models/UserModel';
 import ChatGroupModel from '../models/ChatGroupModel';
 import MessageModel from '../models/MessageModel';
+import { transErrors } from '../../lang/vi';
+import { app } from '../config/app';
 import _ from 'lodash';
 
 const LIMIT_CONVERSATIONS_TAKEN = 15;
@@ -56,7 +58,7 @@ const getAllConversationItems = (currentUserId) => {
               LIMIT_MESSAGES_TAKEN
             );
 
-            conversation.messages = getMessages;
+            conversation.messages = _.reverse(getMessages);
           } else {
             const getMessages = await MessageModel.model.getMessagesInPersonal(
               currentUserId,
@@ -64,7 +66,7 @@ const getAllConversationItems = (currentUserId) => {
               LIMIT_MESSAGES_TAKEN
             );
 
-            conversation.messages = getMessages;
+            conversation.messages = _.reverse(getMessages);
           }
 
           return conversation;
@@ -91,6 +93,69 @@ const getAllConversationItems = (currentUserId) => {
   });
 };
 
+const addNewPure = (sender, receiverId, messageVal, isChatGroup) => {
+  return new Promise(async (resolve, reject) => {
+    try {
+      if (isChatGroup) {
+        const receiverExist = await ChatGroupModel.getChatGroupById(receiverId);
+
+        if (!receiverExist) {
+          return reject(transErrors.conversation_not_found);
+        }
+
+        const receiver = {
+          id: receiverExist._id,
+          name: receiverExist.name,
+          avatar: app.avatar_group,
+        };
+
+        const newMessageItem = {
+          senderId: sender.id,
+          receiverId: receiver.id,
+          conversationType: MessageModel.conversationType.GROUP,
+          messageType: MessageModel.messageType.TEXT,
+          sender,
+          receiver,
+          text: messageVal,
+          createAt: Date.now(),
+        };
+
+        const newMessage = await MessageModel.model.addNewPure(newMessageItem);
+        resolve(newMessage);
+      } else {
+        const receiverExist = await UserModel.getNormalUserDataById(receiverId);
+
+        if (!receiverExist) {
+          return reject(transErrors.conversation_not_found);
+        }
+
+        const receiver = {
+          id: receiverExist._id,
+          name: receiverExist.username,
+          avatar: receiverExist.avatar,
+        };
+
+        const newMessageItem = {
+          senderId: sender.id,
+          receiverId: receiver.id,
+          conversationType: MessageModel.conversationType.PERSONAL,
+          messageType: MessageModel.messageType.TEXT,
+          sender,
+          receiver,
+          text: messageVal,
+          createAt: Date.now(),
+        };
+
+        const newMessage = await MessageModel.model.addNewPure(newMessageItem);
+        resolve(newMessage);
+      }
+    } catch (error) {
+      reject(error);
+    }
+  });
+};
+
 export default {
   getAllConversationItems,
+  addNewPure,
 };

@@ -1,6 +1,18 @@
 import express from 'express';
-import { auth, home, user, contact, notification } from '../controllers/index';
-import { authValid, userValid, contactValid } from '../validation/index';
+import {
+  auth,
+  home,
+  user,
+  contact,
+  notification,
+  message,
+} from '../controllers/index';
+import {
+  authValid,
+  userValid,
+  contactValid,
+  messageValid,
+} from '../validation/index';
 import passport from 'passport';
 import initialPassportLocal from '../controllers/passportController/local';
 import initialPassportFacebook from '../controllers/passportController/facebook';
@@ -133,6 +145,13 @@ const initialRoutes = (app) => {
     '/notification/mark-all-as-read',
     auth.checkLoggedIn,
     notification.markAllAsRead
+  );
+
+  router.post(
+    '/message/add-new-pure',
+    auth.checkLoggedIn,
+    messageValid.sendMessage,
+    message.addNewPure
   );
 
   return app.use('/', router);
