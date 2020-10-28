@@ -3,7 +3,11 @@ import {
   contactService,
   messageService,
 } from '../services/index';
-import { bufferToBase64 } from '../helpers/clientHelper';
+import {
+  bufferToBase64,
+  lastItemOfArray,
+  convertTime,
+} from '../helpers/clientHelper';
 
 const getHome = async (req, res) => {
   const userId = req.user._id;
@@ -22,9 +26,6 @@ const getHome = async (req, res) => {
   );
 
   const getConversations = await messageService.getAllConversationItems(userId);
-  const allConversations = getConversations.allConversations;
-  const userConversations = getConversations.userConversations;
-  const groupConversations = getConversations.groupConversations;
   const allConversationsWithMessages =
     getConversations.allConversationsWithMessages;
 
@@ -40,11 +41,10 @@ const getHome = async (req, res) => {
     countContacts,
     countContactsSent,
     countContactsReceived,
-    allConversations,
-    userConversations,
-    groupConversations,
     allConversationsWithMessages,
     bufferToBase64,
+    lastItemOfArray,
+    convertTime,
   });
 };
 
