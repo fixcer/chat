@@ -48,15 +48,25 @@ const getAllConversationItems = (currentUserId) => {
 
       const allConversationsWithMessagesPromise = allConversations.map(
         async (conversation) => {
-          const getMessages = await MessageModel.model.getMessages(
-            currentUserId,
-            conversation._id,
-            LIMIT_MESSAGES_TAKEN
-          );
-
           conversation = conversation.toObject();
 
-          conversation.messages = getMessages;
+          if (conversation.members) {
+            const getMessages = await MessageModel.model.getMessagesInGroup(
+              conversation._id,
+              LIMIT_MESSAGES_TAKEN
+            );
+
+            conversation.messages = getMessages;
+          } else {
+            const getMessages = await MessageModel.model.getMessagesInPersonal(
+              currentUserId,
+              conversation._id,
+              LIMIT_MESSAGES_TAKEN
+            );
+
+            conversation.messages = getMessages;
+          }
+
           return conversation;
         }
       );
