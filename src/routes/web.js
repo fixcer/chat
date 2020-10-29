@@ -158,6 +158,7 @@ const initialRoutes = (app) => {
     auth.checkLoggedIn,
     message.addNewImage
   );
+  router.post('/message/add-new-file', auth.checkLoggedIn, message.addNewFile);
 
   return app.use('/', router);
 };

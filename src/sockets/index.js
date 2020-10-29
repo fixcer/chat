@@ -5,6 +5,7 @@ import approveRequestContactReceived from './contact/approveRequestContactReceiv
 import removeRequestContactReceived from './contact/removeRequestContactReceived';
 import chatPure from './chat/chatPure';
 import chatImage from './chat/chatImage';
+import chatFile from './chat/chatFile';
 import typingOn from './chat/typingOn';
 import typingOff from './chat/typingOff';
 
@@ -16,6 +17,7 @@ const initSockets = (io) => {
   removeRequestContactReceived(io);
   chatPure(io);
   chatImage(io);
+  chatFile(io);
   typingOn(io);
   typingOff(io);
 };

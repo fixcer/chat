@@ -250,8 +250,95 @@ const addNewImage = (sender, receiverId, messageVal, isChatGroup) => {
   });
 };
 
+const addNewFile = (sender, receiverId, messageVal, isChatGroup) => {
+  return new Promise(async (resolve, reject) => {
+    try {
+      if (isChatGroup) {
+        const receiverExist = await ChatGroupModel.getChatGroupById(receiverId);
+
+        if (!receiverExist) {
+          return reject(transErrors.conversation_not_found);
+        }
+
+        const receiver = {
+          id: receiverExist._id,
+          name: receiverExist.name,
+          avatar: app.avatar_group,
+        };
+
+        const attachmentBuffer = await fsExtra.readFile(messageVal.path);
+        const attachmentContentType = messageVal.mimeType;
+        const attachmentName = messageVal.originalname;
+
+        const newMessageItem = {
+          senderId: sender.id,
+          receiverId: receiver.id,
+          conversationType: MessageModel.conversationType.GROUP,
+          messageType: MessageModel.messageType.FILE,
+          sender,
+          receiver,
+          file: {
+            data: attachmentBuffer,
+            contentType: attachmentContentType,
+            fileName: attachmentName,
+          },
+          createAt: Date.now(),
+        };
+
+        const newMessage = await MessageModel.model.addNew(newMessageItem);
+        await ChatGroupModel.updateWhenHasNewMessage(
+          receiverExist._id,
+          receiverExist.messageAmount + 1
+        );
+        resolve(newMessage);
+      } else {
+        const receiverExist = await UserModel.getNormalUserDataById(receiverId);
+
+        if (!receiverExist) {
+          return reject(transErrors.conversation_not_found);
+        }
+
+        const receiver = {
+          id: receiverExist._id,
+          name: receiverExist.username,
+          avatar: receiverExist.avatar,
+        };
+
+        const attachmentBuffer = await fsExtra.readFile(messageVal.path);
+        const attachmentContentType = messageVal.mimeType;
+        const attachmentName = messageVal.originalname;
+
+        const newMessageItem = {
+          senderId: sender.id,
+          receiverId: receiver.id,
+          conversationType: MessageModel.conversationType.PERSONAL,
+          messageType: MessageModel.messageType.FILE,
+          sender,
+          receiver,
+          file: {
+            data: attachmentBuffer,
+            contentType: attachmentContentType,
+            fileName: attachmentName,
+          },
+          createAt: Date.now(),
+        };
+
+        const newMessage = await MessageModel.model.addNew(newMessageItem);
+        await ContactModel.updateWhenHasNewMessage(
+          sender.id,
+          receiverExist._id
+        );
+        resolve(newMessage);
+      }
+    } catch (error) {
+      reject(error);
+    }
+  });
+};
+
 export default {
   getAllConversationItems,
   addNewPure,
   addNewImage,
+  addNewFile,
 };
