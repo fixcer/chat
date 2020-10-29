@@ -83,6 +83,18 @@ function contentChat(divId) {
 
           //Realtime
           socket.emit('chat-pure', dataToEmit);
+
+          //Remove typing
+          typingOff(divId);
+
+          //Remove typing when new message
+          let check = $(`.chat[data-chat = ${divId}]`).find(
+            'div.bubble-typing-gif'
+          );
+
+          if (check.length) {
+            check.remove();
+          }
         }).fail(function (error) {
           error.responseJSON.forEach((err) => {
             alertify.notify(err, 'error', 7);
