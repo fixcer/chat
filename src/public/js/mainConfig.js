@@ -39,7 +39,7 @@ function enableEmojioneArea(divId) {
         $(`#write-chat-${divId}`).val(this.getText());
       },
       click: function () {
-        contentChat(divId);
+        chatPure(divId);
         typingOn(divId);
       },
       blur: function () {
@@ -95,6 +95,8 @@ function gridPhotos(layoutNumber) {
     .on('click', function () {
       let modalImagesId = $(this).attr('href');
 
+      let originDataImage = $(modalImagesId).find('div.modal-body').html();
+
       let countRows = Math.ceil(
         $(modalImagesId).find('div.all-images>img').length / layoutNumber
       );
@@ -118,6 +120,10 @@ function gridPhotos(layoutNumber) {
             });
           },
         });
+
+      $(modalImagesId).on('hidden.bs.modal', function () {
+        $(this).find('div.modal-body').html(originDataImage);
+      });
     });
 }
 
@@ -189,6 +195,8 @@ function changeScreenChat() {
 
       // Bật emoji, tham số truyền vào là id của box nhập nội dung tin nhắn
       enableEmojioneArea(divId);
+
+      chatImage(divId);
     });
 }
 

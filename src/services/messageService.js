@@ -4,6 +4,7 @@ import ChatGroupModel from '../models/ChatGroupModel';
 import MessageModel from '../models/MessageModel';
 import { transErrors } from '../../lang/vi';
 import { app } from '../config/app';
+import fsExtra from 'fs-extra';
 import _ from 'lodash';
 
 const LIMIT_CONVERSATIONS_TAKEN = 15;
@@ -120,7 +121,7 @@ const addNewPure = (sender, receiverId, messageVal, isChatGroup) => {
           createAt: Date.now(),
         };
 
-        const newMessage = await MessageModel.model.addNewPure(newMessageItem);
+        const newMessage = await MessageModel.model.addNew(newMessageItem);
         await ChatGroupModel.updateWhenHasNewMessage(
           receiverExist._id,
           receiverExist.messageAmount + 1
@@ -150,7 +151,93 @@ const addNewPure = (sender, receiverId, messageVal, isChatGroup) => {
           createAt: Date.now(),
         };
 
-        const newMessage = await MessageModel.model.addNewPure(newMessageItem);
+        const newMessage = await MessageModel.model.addNew(newMessageItem);
+        await ContactModel.updateWhenHasNewMessage(
+          sender.id,
+          receiverExist._id
+        );
+        resolve(newMessage);
+      }
+    } catch (error) {
+      reject(error);
+    }
+  });
+};
+
+const addNewImage = (sender, receiverId, messageVal, isChatGroup) => {
+  return new Promise(async (resolve, reject) => {
+    try {
+      if (isChatGroup) {
+        const receiverExist = await ChatGroupModel.getChatGroupById(receiverId);
+
+        if (!receiverExist) {
+          return reject(transErrors.conversation_not_found);
+        }
+
+        const receiver = {
+          id: receiverExist._id,
+          name: receiverExist.name,
+          avatar: app.avatar_group,
+        };
+
+        const imageBuffer = await fsExtra.readFile(messageVal.path);
+        const imageContentType = messageVal.mimeType;
+        const imageName = messageVal.originalname;
+
+        const newMessageItem = {
+          senderId: sender.id,
+          receiverId: receiver.id,
+          conversationType: MessageModel.conversationType.GROUP,
+          messageType: MessageModel.messageType.IMAGE,
+          sender,
+          receiver,
+          file: {
+            data: imageBuffer,
+            contentType: imageContentType,
+            fileName: imageName,
+          },
+          createAt: Date.now(),
+        };
+
+        const newMessage = await MessageModel.model.addNew(newMessageItem);
+        await ChatGroupModel.updateWhenHasNewMessage(
+          receiverExist._id,
+          receiverExist.messageAmount + 1
+        );
+        resolve(newMessage);
+      } else {
+        const receiverExist = await UserModel.getNormalUserDataById(receiverId);
+
+        if (!receiverExist) {
+          return reject(transErrors.conversation_not_found);
+        }
+
+        const receiver = {
+          id: receiverExist._id,
+          name: receiverExist.username,
+          avatar: receiverExist.avatar,
+        };
+
+        const imageBuffer = await fsExtra.readFile(messageVal.path);
+        const imageContentType = messageVal.mimeType;
+        const imageName = messageVal.originalname;
+
+        const newMessageItem = {
+          senderId: sender.id,
+          receiverId: receiver.id,
+          conversationType: MessageModel.conversationType.PERSONAL,
+          messageType: MessageModel.messageType.IMAGE,
+          sender,
+          receiver,
+          file: {
+            data: imageBuffer,
+            contentType: imageContentType,
+            fileName: imageName,
+          },
+          createAt: Date.now(),
+        };
+
+        const newMessage = await MessageModel.model.addNew(newMessageItem);
         await ContactModel.updateWhenHasNewMessage(
           sender.id,
           receiverExist._id
@@ -166,4 +253,5 @@ const addNewPure = (sender, receiverId, messageVal, isChatGroup) => {
 export default {
   getAllConversationItems,
   addNewPure,
+  addNewImage,
 };

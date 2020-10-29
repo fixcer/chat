@@ -1,4 +1,4 @@
-function contentChat(divId) {
+function chatPure(divId) {
   $('.emojionearea')
     .unbind('keyup')
     .on('keyup', function (element) {

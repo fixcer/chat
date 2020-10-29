@@ -129,7 +129,7 @@ ContactSchema.statics = {
       .exec();
   },
   updateWhenHasNewMessage(userId, contactId) {
-    return this.update(
+    return this.updateMany(
       {
         $or: [
           { $and: [{ userId: userId }, { contactId: contactId }] },
