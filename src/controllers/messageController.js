@@ -102,7 +102,63 @@ const addNewImage = (req, res) => {
   });
 };
 
+let storageAttachmentChat = multer.diskStorage({
+  destination: (req, file, callback) => {
+    callback(null, app.attachment_message_directory);
+  },
+  filename: (req, file, callback) => {
+    const attachmentName = file.originalname;
+    callback(null, attachmentName);
+  },
+});
+
+let attachmentMessageUploadFile = multer({
+  storage: storageAttachmentChat,
+  limits: {
+    fileSize: app.attachment_message_limit_size,
+  },
+}).single('my-attachment-chat');
+
+const addNewFile = (req, res) => {
+  attachmentMessageUploadFile(req, res, async (error) => {
+    if (error) {
+      if (error.message) {
+        return res.status(500).send(transErrors.attachment_message_size);
+      }
+
+      return res.status(500).send(error);
+    }
+
+    try {
+      const sender = {
+        id: req.user._id,
+        name: req.user.username,
+        avatar: req.user.avatar,
+      };
+      const receiverId = req.body.uid;
+      const messageVal = req.file;
+      const isChatGroup = req.body.isChatGroup;
+
+      const newMessage = await messageService.addNewFile(
+        sender,
+        receiverId,
+        messageVal,
+        isChatGroup
+      );
+
+      await fsExtra.remove(
+        `${app.attachment_message_directory}/${newMessage.file.fileName}`
+      );
+
+      return res.status(200).send({ message: newMessage });
+    } catch (error) {
+      return res.status(500).send(error);
+    }
+  });
+};
+
 export default {
   addNewPure,
   addNewImage,
+  addNewFile,
 };

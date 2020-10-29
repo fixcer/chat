@@ -197,6 +197,7 @@ function changeScreenChat() {
       enableEmojioneArea(divId);
 
       chatImage(divId);
+      chatFile(divId);
     });
 }
 
@@ -207,6 +208,15 @@ function convertEmoji() {
     var converted = emojione.toImage(original);
     $(this).html(converted);
   });
+}
+
+function bufferToBase64(buffer) {
+  return btoa(
+    new Uint8Array(buffer).reduce(
+      (data, byte) => data + String.fromCharCode(byte),
+      ''
+    )
+  );
 }
 
 $(document).ready(function () {

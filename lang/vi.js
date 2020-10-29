@@ -26,6 +26,7 @@ export const transErrors = {
   conversation_not_found: 'Cuộc trò chuyện không tồn tại.',
   image_message_type: 'Định dạng file không hợp lệ.',
   image_message_size: 'Kích thước ảnh vượt quá giới hạn cho phép.',
+  attachment_message_size: 'Kích thước tệp vượt quá giới hạn cho phép.',
 };
 
 export const transSuccess = {
