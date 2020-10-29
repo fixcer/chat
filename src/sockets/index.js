@@ -4,6 +4,8 @@ import removeRequestContactSent from './contact/removeRequestContactSent';
 import approveRequestContactReceived from './contact/approveRequestContactReceived';
 import removeRequestContactReceived from './contact/removeRequestContactReceived';
 import chatPure from './chat/chatPure';
+import typingOn from './chat/typingOn';
+import typingOff from './chat/typingOff';
 
 const initSockets = (io) => {
   addContact(io);
@@ -12,6 +14,8 @@ const initSockets = (io) => {
   approveRequestContactReceived(io);
   removeRequestContactReceived(io);
   chatPure(io);
+  typingOn(io);
+  typingOff(io);
 };
 
 export default initSockets;

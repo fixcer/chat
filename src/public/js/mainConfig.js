@@ -40,6 +40,10 @@ function enableEmojioneArea(divId) {
       },
       click: function () {
         contentChat(divId);
+        typingOn(divId);
+      },
+      blur: function () {
+        typingOff(divId);
       },
     },
   });
