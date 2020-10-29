@@ -95,6 +95,8 @@ function gridPhotos(layoutNumber) {
     .on('click', function () {
       let modalImagesId = $(this).attr('href');
 
+      let originDataImage = $(modalImagesId).find('div.modal-body').html();
+
       let countRows = Math.ceil(
         $(modalImagesId).find('div.all-images>img').length / layoutNumber
       );
@@ -118,6 +120,10 @@ function gridPhotos(layoutNumber) {
             });
           },
         });
+
+      $(modalImagesId).on('hidden.bs.modal', function () {
+        $(this).find('div.modal-body').html(originDataImage);
+      });
     });
 }
 

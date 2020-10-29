@@ -151,7 +151,7 @@ const addNewPure = (sender, receiverId, messageVal, isChatGroup) => {
           createAt: Date.now(),
         };
 
-        const newMessage = await MessageModel.model.addNewPure(newMessageItem);
+        const newMessage = await MessageModel.model.addNew(newMessageItem);
         await ContactModel.updateWhenHasNewMessage(
           sender.id,
           receiverExist._id
