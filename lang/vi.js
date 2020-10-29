@@ -24,6 +24,8 @@ export const transErrors = {
   avatar_size: 'Kích thước ảnh vượt quá giới hạn cho phép.',
   user_current_password_failed: 'Mật khẩu hiện tại không chính xác.',
   conversation_not_found: 'Cuộc trò chuyện không tồn tại.',
+  image_message_type: 'Định dạng file không hợp lệ.',
+  image_message_size: 'Kích thước ảnh vượt quá giới hạn cho phép.',
 };
 
 export const transSuccess = {

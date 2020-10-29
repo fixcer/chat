@@ -39,7 +39,7 @@ function enableEmojioneArea(divId) {
         $(`#write-chat-${divId}`).val(this.getText());
       },
       click: function () {
-        contentChat(divId);
+        chatPure(divId);
         typingOn(divId);
       },
       blur: function () {
@@ -189,6 +189,8 @@ function changeScreenChat() {
 
       // Bật emoji, tham số truyền vào là id của box nhập nội dung tin nhắn
       enableEmojioneArea(divId);
+
+      chatImage(divId);
     });
 }
 

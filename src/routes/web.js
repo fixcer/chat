@@ -153,6 +153,11 @@ const initialRoutes = (app) => {
     messageValid.sendMessage,
     message.addNewPure
   );
+  router.post(
+    '/message/add-new-image',
+    auth.checkLoggedIn,
+    message.addNewImage
+  );
 
   return app.use('/', router);
 };

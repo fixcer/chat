@@ -25,7 +25,7 @@ const MessageSchema = new Schema({
 });
 
 MessageSchema.statics = {
-  addNewPure(item) {
+  addNew(item) {
     return this.create(item);
   },
   getMessagesInPersonal(senderId, receiverId, limit) {
