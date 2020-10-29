@@ -25,6 +25,9 @@ const MessageSchema = new Schema({
 });
 
 MessageSchema.statics = {
+  addNewPure(item) {
+    return this.create(item);
+  },
   getMessagesInPersonal(senderId, receiverId, limit) {
     return this.find({
       $or: [
@@ -32,12 +35,12 @@ MessageSchema.statics = {
         { $and: [{ senderId: receiverId }, { receiverId: senderId }] },
       ],
     })
-      .sort({ createAt: 1 })
+      .sort({ createAt: -1 })
       .limit(limit)
       .exec();
   },
   getMessagesInGroup(receiverId, limit) {
-    return this.find({ receiverId }).sort({ createAt: 1 }).limit(limit).exec();
+    return this.find({ receiverId }).sort({ createAt: -1 }).limit(limit).exec();
   },
 };
 

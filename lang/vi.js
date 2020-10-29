@@ -1,14 +1,15 @@
 export const transValidation = {
-  email_incorrect: 'Định dạng email không hợp lệ',
+  email_incorrect: 'Định dạng email không hợp lệ.',
   gender_incorrect: 'Just for fun!!!',
   password_incorrect:
-    'Mật khẩu phải chứa ít nhất 8 ký tự, bao gồm chữ hoa, chữ thường, chữ số và ký tự đặc biệt',
-  password_confirmation_incorrect: 'Hai mật khẩu phải trùng khớp',
-  update_username: 'Username không hợp lệ',
+    'Mật khẩu phải chứa ít nhất 8 ký tự, bao gồm chữ hoa, chữ thường, chữ số và ký tự đặc biệt.',
+  password_confirmation_incorrect: 'Hai mật khẩu phải trùng khớp.',
+  update_username: 'Username không hợp lệ.',
   update_gender: 'Just for fun!!!',
-  update_address: 'Địa chỉ không hợp lệ',
-  update_phone: 'Số điện thoại không hợp lệ',
+  update_address: 'Địa chỉ không hợp lệ.',
+  update_phone: 'Số điện thoại không hợp lệ.',
   keyword_find_users: 'Từ khóa tìm kiếm không hợp lệ.',
+  message_length: 'Độ dài tin nhắn không hợp lệ.',
 };
 
 export const transErrors = {
@@ -21,7 +22,8 @@ export const transErrors = {
   server_error: 'Server đang gặp sự cố, vui lòng thử lại sau.',
   avatar_type: 'Định dạng file không hợp lệ.',
   avatar_size: 'Kích thước ảnh vượt quá giới hạn cho phép.',
-  user_current_password_failed: 'Mật khẩu hiện tại không chính xác',
+  user_current_password_failed: 'Mật khẩu hiện tại không chính xác.',
+  conversation_not_found: 'Cuộc trò chuyện không tồn tại.',
 };
 
 export const transSuccess = {

@@ -103,6 +103,6 @@ dist
 # TernJS port file
 .tern-port
 
-sh/env.sh
+src/public/emojione
 src/public/bower_components
 awesome-chat-template-frontend
