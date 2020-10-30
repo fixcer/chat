@@ -11,12 +11,14 @@ import socket from 'socket.io';
 import initSockets from './sockets/index';
 import cookieParser from 'cookie-parser';
 import configSocketIO from './config/socketio';
-
-const HOST = 'localhost';
-const PORT = 8000;
+import events from 'events';
+import { app as configApp } from './config/app';
 
 // Initial app
 const app = express();
+
+// Set max connection event listeners
+events.EventEmitter.defaultMaxListeners = configApp.max_event_listeners;
 
 // Init server with socket.io & express app
 const server = http.createServer(app);
@@ -53,8 +55,8 @@ configSocketIO(io, cookieParser, Session.sessionStore);
 // Init all sockets
 initSockets(io);
 
-server.listen(PORT, HOST, () => {
-  console.log(`Hello Fixcer, i'm running at ${HOST}:${PORT}/`);
+server.listen(configApp.PORT, configApp.HOST, () => {
+  console.log(`Running at ${configApp.HOST}:${configApp.PORT}`);
 });
 
 // import pem from 'pem';

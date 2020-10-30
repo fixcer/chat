@@ -198,6 +198,7 @@ function changeScreenChat() {
 
       chatImage(divId);
       chatFile(divId);
+      chatVideo(divId);
     });
 }
 
@@ -252,4 +253,8 @@ $(document).ready(function () {
   convertEmoji();
 
   $('ul.people').find('a')[0].click();
+
+  $('#video-chat-group').bind('click', function () {
+    alertify.notify('Không khả dụng với cuộc hội thoại nhóm', 'warning', 7);
+  });
 });
