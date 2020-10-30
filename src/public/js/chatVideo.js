@@ -15,6 +15,21 @@ function chatVideo(divId) {
     });
 }
 
+function playVideoStream(videoTagId, stream) {
+  let video = document.getElementById(videoTagId);
+
+  video.srcObject = stream;
+  video.onloadeddata = function () {
+    video.play();
+  };
+}
+
+function closeVideoStream(stream) {
+  return stream.getTracks().forEach((track) => {
+    track.stop();
+  });
+}
+
 $(document).ready(function () {
   // Response of server when listener offline
   socket.on('listener-offline', function () {
@@ -22,7 +37,14 @@ $(document).ready(function () {
   });
 
   let getPeerId = '';
-  const peer = new Peer();
+  const peer = new Peer({
+    key: 'peerjs',
+    host: 'peer-fixcer.herokuapp.com',
+    secure: true,
+    port: 443,
+    debug: 1,
+  });
+
   peer.on('open', function (peerId) {
     getPeerId = peerId;
   });
@@ -42,7 +64,7 @@ $(document).ready(function () {
     socket.emit('listener-emit-peer-id', dataToEmit);
   });
 
-  // Receiver peer id of listener from server and request call
+  // Server send for caller
   socket.on('check-status-caller', function (response) {
     const dataToEmit = {
       callerId: response.callerId,
@@ -105,7 +127,56 @@ $(document).ready(function () {
           Swal.close();
           clearInterval(timeInterval);
 
-          console.log('Caller ok');
+          let getUserMedia = (
+            navigator.getUserMedia ||
+            navigator.webkitGetUserMedia ||
+            navigator.mozGetUserMedia
+          ).bind(navigator);
+
+          getUserMedia(
+            { video: true, audio: true },
+            function (stream) {
+              // Show modal streaming
+              $('#streamModal').modal('show');
+
+              // Play stream of caller
+              playVideoStream('local-stream', stream);
+
+              // Call to listener
+              let call = peer.call(response.listenerPeerId, stream);
+
+              // Listen and play stream of listener
+              call.on('stream', function (remoteStream) {
+                playVideoStream('remote-stream', remoteStream);
+              });
+
+              // Close modal
+              $('#streamModal').on('hidden.bs.modal', function () {
+                closeVideoStream(stream);
+
+                Swal.fire({
+                  type: 'warning',
+                  title: `Đã kết thúc cuộc gọi với &nbsp;<span style="color: #2ecc71;">${response.listenerName}</span>`,
+                  backdrop: 'rgba(85, 85, 85, 0.4)',
+                  width: '52rem',
+                  allowOutsideClick: false,
+                  confirmButtonColor: '#2ECC71',
+                  confirmButtonText: 'Xác nhận',
+                });
+              });
+            },
+            function (err) {
+              if (err.toString() === 'NotAllowedError: Permission denied') {
+                alertify.notify('Không có quyền truy cập camera', 'error', 7);
+              }
+
+              if (
+                err.toString() === 'NotFoundError: Requested device not found'
+              ) {
+                alertify.notify('Không tìm thấy thiết bị.', 'error', 7);
+              }
+            }
+          );
         });
       },
       onClose: () => {
@@ -178,7 +249,57 @@ $(document).ready(function () {
           Swal.close();
           clearInterval(timeInterval);
 
-          console.log('Listener ok');
+          let getUserMedia = (
+            navigator.getUserMedia ||
+            navigator.webkitGetUserMedia ||
+            navigator.mozGetUserMedia
+          ).bind(navigator);
+
+          peer.on('call', function (call) {
+            getUserMedia(
+              { video: true, audio: true },
+              function (stream) {
+                // Show modal streaming
+                $('#streamModal').modal('show');
+
+                // Play stream of listener
+                playVideoStream('local-stream', stream);
+
+                call.answer(stream); // Answer the call with an A/V stream.
+
+                call.on('stream', function (remoteStream) {
+                  // Play stream of caller
+                  playVideoStream('remote-stream', remoteStream);
+                });
+
+                // Close modal
+                $('#streamModal').on('hidden.bs.modal', function () {
+                  closeVideoStream(stream);
+
+                  Swal.fire({
+                    type: 'warning',
+                    title: `Đã kết thúc cuộc gọi với &nbsp;<span style="color: #2ecc71;">${response.callerName}</span>`,
+                    backdrop: 'rgba(85, 85, 85, 0.4)',
+                    width: '52rem',
+                    allowOutsideClick: false,
+                    confirmButtonColor: '#2ECC71',
+                    confirmButtonText: 'Xác nhận',
+                  });
+                });
+              },
+              function (err) {
+                if (err.toString() === 'NotAllowedError: Permission denied') {
+                  alertify.notify('Không có quyền truy cập camera', 'error', 7);
+                }
+
+                if (
+                  err.toString() === 'NotFoundError: Requested device not found'
+                ) {
+                  alertify.notify('Không tìm thấy thiết bị.', 'error', 7);
+                }
+              }
+            );
+          });
         });
       },
       onClose: () => {
