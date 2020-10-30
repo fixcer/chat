@@ -231,7 +231,7 @@ $(document).ready(function () {
   nineScrollLeft();
 
   // Icon loading khi chạy ajax
-  ajaxLoading();
+  // ajaxLoading();
 
   // Hiển thị hình ảnh grid slide trong modal tất cả ảnh, tham số truyền vào là số ảnh được hiển thị trên 1 hàng.
   // Tham số chỉ được phép trong khoảng từ 1 đến 5

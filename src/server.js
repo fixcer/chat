@@ -56,7 +56,7 @@ configSocketIO(io, cookieParser, Session.sessionStore);
 initSockets(io);
 
 server.listen(configApp.PORT, configApp.HOST, () => {
-  console.log(`Running at ${configApp.HOST}:${configApp.PORT}`);
+  console.log(`Running at http://${configApp.HOST}:${configApp.PORT}`);
 });
 
 // import pem from 'pem';
