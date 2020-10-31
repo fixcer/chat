@@ -12,32 +12,34 @@ import request from 'request';
 
 const getICETurnServer = () => {
   return new Promise(async (resolve, reject) => {
-    const bodyString = JSON.stringify({
-      format: 'urls',
-    });
+    // const bodyString = JSON.stringify({
+    //   format: 'urls',
+    // });
 
-    const options = {
-      url: 'https://global.xirsys.net/_turn/fixcer-chat',
-      method: 'PUT',
-      headers: {
-        Authorization:
-          'Basic ' +
-          Buffer.from('fixcer:4438e07e-1b6c-11eb-84f5-0242ac150002').toString(
-            'base64'
-          ),
-        'Content-Type': 'application/json',
-        'Content-Length': bodyString.length,
-      },
-    };
+    // const options = {
+    //   url: 'https://global.xirsys.net/_turn/fixcer-chat',
+    //   method: 'PUT',
+    //   headers: {
+    //     Authorization:
+    //       'Basic ' +
+    //       Buffer.from('fixcer:4438e07e-1b6c-11eb-84f5-0242ac150002').toString(
+    //         'base64'
+    //       ),
+    //     'Content-Type': 'application/json',
+    //     'Content-Length': bodyString.length,
+    //   },
+    // };
 
-    request(options, (error, response, body) => {
-      if (error) {
-        return reject(error);
-      }
+    // request(options, (error, response, body) => {
+    //   if (error) {
+    //     return reject(error);
+    //   }
 
-      const bodyJSON = JSON.parse(body);
-      resolve(bodyJSON.v.iceServers);
-    });
+    //   const bodyJSON = JSON.parse(body);
+    //   resolve(bodyJSON.v.iceServers);
+    // });
+
+    resolve([]);
   });
 };
 

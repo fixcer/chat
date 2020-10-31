@@ -9,6 +9,7 @@ import chatFile from './chat/chatFile';
 import chatVideo from './chat/chatVideo';
 import typingOn from './chat/typingOn';
 import typingOff from './chat/typingOff';
+import userStatus from './user/userStatus';
 
 const initSockets = (io) => {
   addContact(io);
@@ -22,6 +23,7 @@ const initSockets = (io) => {
   chatVideo(io);
   typingOn(io);
   typingOff(io);
+  userStatus(io);
 };
 
 export default initSockets;
