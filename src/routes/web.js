@@ -99,6 +99,12 @@ const initialRoutes = (app) => {
     contactValid.findUsersContact,
     contact.findUsersContact
   );
+  router.get(
+    '/contact/search-friends/:keyword',
+    auth.checkLoggedIn,
+    contactValid.searchFriends,
+    contact.searchFriends
+  );
   router.post('/contact/add-new', auth.checkLoggedIn, contact.addNew);
   router.delete(
     '/contact/remove-contact',

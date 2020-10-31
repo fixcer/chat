@@ -141,6 +141,13 @@ ContactSchema.statics = {
       }
     ).exec();
   },
+  getFriends(userId) {
+    return this.find({
+      $and: [{ $or: [{ userId }, { contactId: userId }] }, { status: true }],
+    })
+      .sort({ updateAt: -1 })
+      .exec();
+  },
 };
 
 module.exports = mongoose.model('contact', ContactSchema);

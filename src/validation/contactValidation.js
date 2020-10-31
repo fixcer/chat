@@ -12,6 +12,18 @@ const findUsersContact = [
     ),
 ];
 
+const searchFriends = [
+  check('keyword', transValidation.keyword_find_users)
+    .isLength({
+      min: 1,
+      max: 17,
+    })
+    .matches(
+      /^[\s0-9a-zA-Z_ÀÁÂÃÈÉÊÌÍÒÓÔÕÙÚĂĐĨŨƠàáâãèéêìíòóôõùúăđĩũơƯĂẠẢẤẦẨẪẬẮẰẲẴẶẸẺẼỀỀỂưăạảấầẩẫậắằẳẵặẹẻẽềềểỄỆỈỊỌỎỐỒỔỖỘỚỜỞỠỢỤỦỨỪễệỉịọỏốồổỗộớờởỡợụủứừỬỮỰỲỴÝỶỸửữựỳỵỷỹ ]+$/
+    ),
+];
+
 module.exports = {
   findUsersContact,
+  searchFriends,
 };
