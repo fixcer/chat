@@ -36,6 +36,8 @@ $(document).ready(function () {
     alertify.notify('Người dùng này hiện không trực tuyến', 'error', 7);
   });
 
+  const iceServerList = JSON.parse($('#ice-server-list').val());
+
   let getPeerId = '';
   const peer = new Peer({
     key: 'peerjs',
@@ -43,6 +45,9 @@ $(document).ready(function () {
     secure: true,
     port: 443,
     debug: 1,
+    config: {
+      iceServers: iceServerList,
+    },
   });
 
   peer.on('open', function (peerId) {
