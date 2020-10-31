@@ -8,6 +8,38 @@ import {
   lastItemOfArray,
   convertTime,
 } from '../helpers/clientHelper';
+import request from 'request';
+
+const getICETurnServer = () => {
+  return new Promise(async (resolve, reject) => {
+    const bodyString = JSON.stringify({
+      format: 'urls',
+    });
+
+    const options = {
+      url: 'https://global.xirsys.net/_turn/fixcer-chat',
+      method: 'PUT',
+      headers: {
+        Authorization:
+          'Basic ' +
+          Buffer.from('fixcer:4438e07e-1b6c-11eb-84f5-0242ac150002').toString(
+            'base64'
+          ),
+        'Content-Type': 'application/json',
+        'Content-Length': bodyString.length,
+      },
+    };
+
+    request(options, (error, response, body) => {
+      if (error) {
+        return reject(error);
+      }
+
+      const bodyJSON = JSON.parse(body);
+      resolve(bodyJSON.v.iceServers);
+    });
+  });
+};
 
 const getHome = async (req, res) => {
   const userId = req.user._id;
@@ -29,6 +61,8 @@ const getHome = async (req, res) => {
   const allConversationsWithMessages =
     getConversations.allConversationsWithMessages;
 
+  const iceServerList = await getICETurnServer();
+
   return res.render('main/home/index', {
     errors: req.flash('errors'),
     success: req.flash('success'),
@@ -45,6 +79,7 @@ const getHome = async (req, res) => {
     bufferToBase64,
     lastItemOfArray,
     convertTime,
+    iceServerList: JSON.stringify(iceServerList),
   });
 };
 

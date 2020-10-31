@@ -6,6 +6,7 @@ import removeRequestContactReceived from './contact/removeRequestContactReceived
 import chatPure from './chat/chatPure';
 import chatImage from './chat/chatImage';
 import chatFile from './chat/chatFile';
+import chatVideo from './chat/chatVideo';
 import typingOn from './chat/typingOn';
 import typingOff from './chat/typingOff';
 
@@ -18,6 +19,7 @@ const initSockets = (io) => {
   chatPure(io);
   chatImage(io);
   chatFile(io);
+  chatVideo(io);
   typingOn(io);
   typingOff(io);
 };

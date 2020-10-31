@@ -198,6 +198,7 @@ function changeScreenChat() {
 
       chatImage(divId);
       chatFile(divId);
+      chatVideo(divId);
     });
 }
 
@@ -230,7 +231,7 @@ $(document).ready(function () {
   nineScrollLeft();
 
   // Icon loading khi chạy ajax
-  ajaxLoading();
+  // ajaxLoading();
 
   // Hiển thị hình ảnh grid slide trong modal tất cả ảnh, tham số truyền vào là số ảnh được hiển thị trên 1 hàng.
   // Tham số chỉ được phép trong khoảng từ 1 đến 5
@@ -252,4 +253,8 @@ $(document).ready(function () {
   convertEmoji();
 
   $('ul.people').find('a')[0].click();
+
+  $('#video-chat-group').bind('click', function () {
+    alertify.notify('Không khả dụng với cuộc hội thoại nhóm', 'warning', 7);
+  });
 });
