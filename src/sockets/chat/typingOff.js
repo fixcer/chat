@@ -18,6 +18,15 @@ const typingOff = (io) => {
       clients = pushSocketIdToArray(clients, group._id, socket.id);
     });
 
+    // When has new group chat
+    socket.on('new-group-created', (data) => {
+      clients = pushSocketIdToArray(clients, data.groupChat._id, socket.id);
+    });
+
+    socket.on('receiver-notify-group-created', (data) => {
+      clients = pushSocketIdToArray(clients, data.groupChatId, socket.id);
+    });
+
     socket.on('user-is-not-typing', (data) => {
       if (data.groupId) {
         let response = {

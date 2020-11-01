@@ -10,6 +10,7 @@ import chatVideo from './chat/chatVideo';
 import typingOn from './chat/typingOn';
 import typingOff from './chat/typingOff';
 import userStatus from './user/userStatus';
+import newGroupChat from './group/newGroupChat';
 
 const initSockets = (io) => {
   addContact(io);
@@ -24,6 +25,7 @@ const initSockets = (io) => {
   typingOn(io);
   typingOff(io);
   userStatus(io);
+  newGroupChat(io);
 };
 
 export default initSockets;

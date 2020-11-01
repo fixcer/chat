@@ -18,11 +18,20 @@ const userStatus = (io) => {
       clients = pushSocketIdToArray(clients, group._id, socket.id);
     });
 
-    // Emit when login or F5
-    socket.emit('check-users-online', Object.keys(clients));
+    // When has new group chat
+    socket.on('new-group-created', (data) => {
+      clients = pushSocketIdToArray(clients, data.groupChat._id, socket.id);
+    });
+    socket.on('receiver-notify-group-created', (data) => {
+      clients = pushSocketIdToArray(clients, data.groupChatId, socket.id);
+    });
+    socket.on('check-status', () => {
+      // Emit when login or F5
+      socket.emit('check-users-online', Object.keys(clients));
 
-    // Emit when another users login
-    socket.broadcast.emit('broadcast-after-login', socket.request.user._id);
+      // Emit when another users login
+      socket.broadcast.emit('broadcast-after-login', socket.request.user._id);
+    });
 
     socket.on('disconnect', () => {
       clients = removeSocketIdFromArray(
