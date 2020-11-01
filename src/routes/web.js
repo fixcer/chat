@@ -6,12 +6,14 @@ import {
   contact,
   notification,
   message,
+  groupChat,
 } from '../controllers/index';
 import {
   authValid,
   userValid,
   contactValid,
   messageValid,
+  groupChatValid,
 } from '../validation/index';
 import passport from 'passport';
 import initialPassportLocal from '../controllers/passportController/local';
@@ -165,6 +167,13 @@ const initialRoutes = (app) => {
     message.addNewImage
   );
   router.post('/message/add-new-file', auth.checkLoggedIn, message.addNewFile);
+
+  router.post(
+    '/group-chat/add-new',
+    auth.checkLoggedIn,
+    groupChatValid.addNewGroup,
+    groupChat.addNewGroup
+  );
 
   return app.use('/', router);
 };

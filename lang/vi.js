@@ -10,6 +10,8 @@ export const transValidation = {
   update_phone: 'Số điện thoại không hợp lệ.',
   keyword_find_users: 'Từ khóa tìm kiếm không hợp lệ.',
   message_length: 'Độ dài tin nhắn không hợp lệ.',
+  group_chat_users_incorrect: 'Tối thiểu phải có 3 thành viên.',
+  group_chat_name_incorrect: 'Tên nhóm không hợp lệ.',
 };
 
 export const transErrors = {

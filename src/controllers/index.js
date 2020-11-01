@@ -4,6 +4,7 @@ import userController from './userController';
 import contactController from './contactController';
 import notificationController from './notificationController';
 import messageController from './messageController';
+import groupChatController from './groupChatController';
 
 export {
   authController as auth,
@@ -12,4 +13,5 @@ export {
   contactController as contact,
   notificationController as notification,
   messageController as message,
+  groupChatController as groupChat,
 };
