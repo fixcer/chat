@@ -25,6 +25,27 @@ const findUsersContact = (currentUserId, keyword) => {
   });
 };
 
+const searchFriends = (currentUserId, keyword) => {
+  return new Promise(async (resolve, reject) => {
+    let friendIds = [];
+    const friends = await ContactModel.getFriends(currentUserId);
+
+    friends.forEach((friend) => {
+      friendIds.push(friend.userId);
+      friendIds.push(friend.contactId);
+    });
+
+    friendIds = _.uniqBy(friendIds);
+    friendIds = friendIds.filter((friendId) => {
+      return friendId != currentUserId;
+    });
+
+    const users = await UserModel.findAllToAddGroup(friendIds, keyword);
+
+    resolve(users);
+  });
+};
+
 const addNew = (currentUserId, contactId) => {
   return new Promise(async (resolve, reject) => {
     let contactExist = await ContactModel.checkExist(currentUserId, contactId);
@@ -281,6 +302,7 @@ const readMoreContactsReceived = (currentUserId, skipNumberContacts) => {
 
 export default {
   findUsersContact,
+  searchFriends,
   addNew,
   removeContact,
   removeRequestContactSent,

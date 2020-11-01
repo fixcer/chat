@@ -8,7 +8,7 @@ import {
  * @param io from socket.js lib
  */
 
-const chatFile = (io) => {
+const typingOn = (io) => {
   let clients = {};
 
   io.on('connection', (socket) => {
@@ -18,49 +18,31 @@ const chatFile = (io) => {
       clients = pushSocketIdToArray(clients, group._id, socket.id);
     });
 
-    // When has new group chat
     socket.on('new-group-created', (data) => {
       clients = pushSocketIdToArray(clients, data.groupChat._id, socket.id);
+
+      const response = {
+        groupChat: data.groupChat,
+      };
+
+      data.groupChat.members.forEach((member) => {
+        if (
+          clients[member.userId] &&
+          member.userId != socket.request.user._id
+        ) {
+          emitNotifyToArray(
+            clients,
+            member.userId,
+            io,
+            'request-new-group-created',
+            response
+          );
+        }
+      });
     });
 
     socket.on('receiver-notify-group-created', (data) => {
       clients = pushSocketIdToArray(clients, data.groupChatId, socket.id);
-    });
-
-    socket.on('chat-file', (data) => {
-      if (data.groupId) {
-        let response = {
-          currentUserId: socket.request.user._id,
-          message: data.message,
-          currentGroupId: data.groupId,
-        };
-
-        if (clients[data.groupId]) {
-          emitNotifyToArray(
-            clients,
-            data.groupId,
-            io,
-            'response-chat-file',
-            response
-          );
-        }
-      }
-      if (data.contactId) {
-        let response = {
-          currentUserId: socket.request.user._id,
-          message: data.message,
-        };
-
-        if (clients[data.contactId]) {
-          emitNotifyToArray(
-            clients,
-            data.contactId,
-            io,
-            'response-chat-file',
-            response
-          );
-        }
-      }
     });
 
     socket.on('disconnect', () => {
@@ -76,4 +58,4 @@ const chatFile = (io) => {
   });
 };
 
-export default chatFile;
+export default typingOn;

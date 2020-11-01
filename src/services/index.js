@@ -3,6 +3,7 @@ import userService from './userService';
 import contactService from './contactService';
 import notificationService from './notificationService';
 import messageService from './messageService';
+import groupChatService from './groupChatService';
 
 module.exports = {
   authService,
@@ -10,4 +11,5 @@ module.exports = {
   contactService,
   notificationService,
   messageService,
+  groupChatService,
 };
