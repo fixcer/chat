@@ -31,6 +31,28 @@ function removeContact() {
               decreaseNumberOfNotificationContact('count-contacts');
 
               socket.emit('remove-contact', { contactId: targetId });
+
+              let checkActive = $('#all-chat')
+                .find(`li[data-chat = ${targetId}]`)
+                .hasClass('active');
+
+              // Remove left side
+              $('#all-chat').find(`ul a[href = "#uid_${targetId}"]`).remove();
+              $('#user-chat').find(`ul a[href = "#uid_${targetId}"]`).remove();
+
+              // Remove right side
+              $('#screen-chat').find(`div#to_${targetId}`).remove();
+
+              // Remove image modal
+              $('body').find(`div#imagesModal_${targetId}`).remove();
+
+              // Remove attachment modal
+              $('body').find(`div#attachmentsModal_${targetId}`).remove();
+
+              // Auto focus conversation
+              if (checkActive) {
+                $('ul.people').find('a')[0].click();
+              }
             }
           },
         });
@@ -41,6 +63,28 @@ function removeContact() {
 socket.on('response-remove-contact', function (user) {
   $('#contacts').find(`ul li[data-uid = ${user.id}]`).remove();
   decreaseNumberOfNotificationContact('count-contacts');
+
+  let checkActive = $('#all-chat')
+    .find(`li[data-chat = ${user.id}]`)
+    .hasClass('active');
+
+  // Remove left side
+  $('#all-chat').find(`ul a[href = "#uid_${user.id}"]`).remove();
+  $('#user-chat').find(`ul a[href = "#uid_${user.id}"]`).remove();
+
+  // Remove right side
+  $('#screen-chat').find(`div#to_${user.id}`).remove();
+
+  // Remove image modal
+  $('body').find(`div#imagesModal_${user.id}`).remove();
+
+  // Remove attachment modal
+  $('body').find(`div#attachmentsModal_${user.id}`).remove();
+
+  // Auto focus conversation
+  if (checkActive) {
+    $('ul.people').find('a')[0].click();
+  }
 });
 
 $(document).ready(function () {
