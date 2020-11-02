@@ -167,6 +167,11 @@ const initialRoutes = (app) => {
     message.addNewImage
   );
   router.post('/message/add-new-file', auth.checkLoggedIn, message.addNewFile);
+  router.get(
+    '/message/read-more-conversation',
+    auth.checkLoggedIn,
+    message.readMoreConversation
+  );
 
   router.post(
     '/group-chat/add-new',
