@@ -7,8 +7,7 @@ const MongoStore = connectMongo(session);
  * This variable is where save session , in this case is mongodb.
  */
 const sessionStore = new MongoStore({
-  url:
-    'mongodb+srv://admin:admin@cluster0.xwbcv.mongodb.net/chat?retryWrites=true&w=majority',
+  url: 'mongodb://localhost:27017/chat',
   autoReconnect: true,
   autoRemove: 'native',
 });
