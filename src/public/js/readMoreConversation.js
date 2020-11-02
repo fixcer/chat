@@ -47,6 +47,9 @@ $(document).ready(function () {
 
         $('#link-read-more-all-chat').css('display', 'inline-block');
         $('.read-more-all-chat-loader').css('display', 'none');
+
+        // call readMoreMessage
+        readMoreMessage();
       }
     );
   });

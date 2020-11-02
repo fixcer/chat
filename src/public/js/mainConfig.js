@@ -215,8 +215,9 @@ $(document).ready(function () {
   changeScreenChat();
 
   convertEmoji();
-
-  $('ul.people').find('a')[0].click();
+  if ($('ul.people').find('a').length) {
+    $('ul.people').find('a')[0].click();
+  }
 
   $('#video-chat-group').bind('click', function () {
     alertify.notify('Không khả dụng với cuộc hội thoại nhóm', 'warning', 7);
