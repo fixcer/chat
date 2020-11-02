@@ -1594,3 +1594,8 @@ color: #2c3e50 !important;
     opacity: 0;
   }
 }
+
+.message-loading {
+  display: block;
+  margin: 0 auto;
+}
