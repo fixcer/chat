@@ -4,6 +4,15 @@ import fsExtra from 'fs-extra';
 import { transErrors } from '../../lang/vi';
 import { messageService } from '../services/index';
 import { validationResult } from 'express-validator/check';
+import ejs from 'ejs';
+import {
+  lastItemOfArray,
+  convertTime,
+  bufferToBase64,
+} from '../helpers/clientHelper';
+import { promisify } from 'util';
+
+const renderFile = promisify(ejs.renderFile).bind(ejs);
 
 const addNewPure = async (req, res) => {
   const errorArray = [];
@@ -157,8 +166,58 @@ const addNewFile = (req, res) => {
   });
 };
 
+const readMoreConversation = async (req, res) => {
+  try {
+    const skipPersonal = +req.query.skipPersonal;
+    const skipGroup = +req.query.skipGroup;
+
+    const allConversation = await messageService.readMoreConversation(
+      req.user._id,
+      skipPersonal,
+      skipGroup
+    );
+
+    const dataToRender = {
+      allConversation,
+      lastItemOfArray,
+      convertTime,
+      bufferToBase64,
+      user: req.user,
+    };
+
+    const leftSideData = await renderFile(
+      'src/views/main/readMoreConversations/_leftSide.ejs',
+      dataToRender
+    );
+    const rightSideData = await renderFile(
+      'src/views/main/readMoreConversations/_rightSide.ejs',
+      dataToRender
+    );
+    const imageModalData = await renderFile(
+      'src/views/main/readMoreConversations/_imageModal.ejs',
+      dataToRender
+    );
+    const attachmentModalData = await renderFile(
+      'src/views/main/readMoreConversations/_attachmentModal.ejs',
+      dataToRender
+    );
+
+    return res
+      .status(200)
+      .send({
+        leftSideData,
+        rightSideData,
+        imageModalData,
+        attachmentModalData,
+      });
+  } catch (error) {
+    return res.status(500).send(error);
+  }
+};
+
 export default {
   addNewPure,
   addNewImage,
   addNewFile,
+  readMoreConversation,
 };
