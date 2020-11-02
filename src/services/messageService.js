@@ -420,10 +420,40 @@ const readMoreConversation = (currentUserId, skipPersonal, skipGroup) => {
   });
 };
 
+const readMore = (currentUserId, skipMessage, targetId, chatInGroup) => {
+  return new Promise(async (resolve, reject) => {
+    try {
+      if (chatInGroup) {
+        let getMessages = await MessageModel.model.readMoreMessagesInGroup(
+          targetId,
+          skipMessage,
+          LIMIT_MESSAGES_TAKEN
+        );
+
+        getMessages = _.reverse(getMessages);
+        return resolve(getMessages);
+      }
+
+      let getMessages = await MessageModel.model.readMoreMessagesInPersonal(
+        currentUserId,
+        targetId,
+        skipMessage,
+        LIMIT_MESSAGES_TAKEN
+      );
+
+      getMessages = _.reverse(getMessages);
+      return resolve(getMessages);
+    } catch (error) {
+      reject(error);
+    }
+  });
+};
+
 export default {
   getAllConversationItems,
   addNewPure,
   addNewImage,
   addNewFile,
   readMoreConversation,
+  readMore,
 };

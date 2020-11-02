@@ -172,6 +172,7 @@ const initialRoutes = (app) => {
     auth.checkLoggedIn,
     message.readMoreConversation
   );
+  router.get('/message/read-more', auth.checkLoggedIn, message.readMore);
 
   router.post(
     '/group-chat/add-new',

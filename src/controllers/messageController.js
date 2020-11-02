@@ -202,14 +202,50 @@ const readMoreConversation = async (req, res) => {
       dataToRender
     );
 
-    return res
-      .status(200)
-      .send({
-        leftSideData,
-        rightSideData,
-        imageModalData,
-        attachmentModalData,
-      });
+    return res.status(200).send({
+      leftSideData,
+      rightSideData,
+      imageModalData,
+      attachmentModalData,
+    });
+  } catch (error) {
+    return res.status(500).send(error);
+  }
+};
+
+const readMore = async (req, res) => {
+  try {
+    const skipMessage = +req.query.skipPersonal;
+    const targetId = req.query.targetId;
+    const chatInGroup = req.query.chatInGroup === 'true';
+
+    const newMessages = await messageService.readMore(
+      req.user._id,
+      skipMessage,
+      targetId,
+      chatInGroup
+    );
+
+    const dataToRender = { newMessages, bufferToBase64, user: req.user };
+
+    const rightSideData = await renderFile(
+      'src/views/main/readMoreMessages/_rightSide.ejs',
+      dataToRender
+    );
+    const imageModalData = await renderFile(
+      'src/views/main/readMoreMessages/_imageModal.ejs',
+      dataToRender
+    );
+    const attachmentModalData = await renderFile(
+      'src/views/main/readMoreMessages/_attachmentModal.ejs',
+      dataToRender
+    );
+
+    return res.status(200).send({
+      rightSideData,
+      imageModalData,
+      attachmentModalData,
+    });
   } catch (error) {
     return res.status(500).send(error);
   }
@@ -220,4 +256,5 @@ export default {
   addNewImage,
   addNewFile,
   readMoreConversation,
+  readMore,
 };
