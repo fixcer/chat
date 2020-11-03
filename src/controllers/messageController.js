@@ -1,3 +1,4 @@
+import axios from 'axios';
 import multer from 'multer';
 import { app } from '../config/app';
 import fsExtra from 'fs-extra';
@@ -24,6 +25,15 @@ const addNewPure = async (req, res) => {
       errorArray.push(error.msg);
     });
 
+    return res.status(500).send(errorArray);
+  }
+
+  const response = await axios.post('http://127.0.0.1:5000/filter', {
+    message: req.body.messageVal,
+  });
+
+  if (!response.data.accept) {
+    errorArray.push('Tin nhắn của bạn vi phạm tiêu chuẩn cộng đồng.');
     return res.status(500).send(errorArray);
   }
 

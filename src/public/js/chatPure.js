@@ -1,3 +1,35 @@
+const profanityVocab = [
+  'giết',
+  'ngu',
+  'vãi lờ',
+  // 'vl',
+  'vcl',
+  'đm',
+  'dm',
+  'đmm',
+  'dmm',
+  'đậu má',
+  'loz',
+  'lozzz',
+  'đcm',
+  'dcm',
+  'tổ sư',
+  'tiên sư',
+  'hãm loz',
+  'hãm lờ',
+  'súc vật',
+  'á đù',
+  'đù má',
+  'đù',
+  'lìn',
+  'cc',
+  'cẹc',
+];
+
+const inProfanity = (token) => {
+  profanityVocab.includes(token);
+};
+
 function chatPure(divId) {
   $('.emojionearea')
     .unbind('keyup')
@@ -11,6 +43,23 @@ function chatPure(divId) {
         if (!targetId.length || !messageVal.length) {
           return false;
         }
+
+        // if (!messageVal.split(' ').some(inProfanity)) {
+        //   Swal.fire({
+        //     type: 'error',
+        //     title: 'Tin nhắn của bạn không tuân theo quy tắc cộng đồng.',
+        //     backdrop: 'rgba(85, 85, 85, 0.4)',
+        //     width: '52rem',
+        //     allowOutsideClick: false,
+        //     confirmButtonColor: '#2ECC71',
+        //     confirmButtonText: 'Tôi chắc chắn tuân thủ quy tắc cộng đồng.',
+        //     onClose: () => {
+        //       $(`#write-chat-${divId}`).val('');
+        //       currentEmojiOneAre.find('.emojionearea-editor').text('');
+        //     },
+        //   });
+        //   return false;
+        // }
 
         let dataPureForSend = {
           uid: targetId,
@@ -96,6 +145,8 @@ function chatPure(divId) {
             check.remove();
           }
         }).fail(function (error) {
+          $(`#write-chat-${divId}`).val('');
+          currentEmojiOneAre.find('.emojionearea-editor').text('');
           error.responseJSON.forEach((err) => {
             alertify.notify(err, 'error', 7);
           });
