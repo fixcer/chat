@@ -12,8 +12,11 @@ import {
   bufferToBase64,
 } from '../helpers/clientHelper';
 import { promisify } from 'util';
+import request from 'request-promise';
+import fs from 'fs';
 
 const renderFile = promisify(ejs.renderFile).bind(ejs);
+const requestPromise = promisify(request);
 
 const addNewPure = async (req, res) => {
   const errorArray = [];
@@ -83,6 +86,25 @@ let imageMessageUploadFile = multer({
   },
 }).single('my-image-chat');
 
+const NSFW = async (img) => {
+  const options = {
+    url: 'https://app.nanonets.com/api/v2/ImageCategorization/LabelFile/',
+    formData: {
+      modelId: 'e9a7418d-db82-4cc3-bbe1-8c37ad8c77ef',
+      file: fs.createReadStream(img),
+    },
+    headers: {
+      Authorization:
+        'Basic ' +
+        Buffer.from('QHWhmbOmlbzTFLkaXJUPBp96mrXk63Bg' + ':').toString(
+          'base64'
+        ),
+    },
+  };
+
+  return await request.post(options);
+};
+
 const addNewImage = (req, res) => {
   imageMessageUploadFile(req, res, async (error) => {
     if (error) {
@@ -91,6 +113,14 @@ const addNewImage = (req, res) => {
       }
 
       return res.status(500).send(error);
+    }
+
+    let nsfw = await NSFW(req.file.path);
+    nsfw = JSON.parse(nsfw).result[0].prediction;
+    if (nsfw[1].probability > 0.5 && nsfw[1].label === 'nsfw') {
+      return res.status(500).send('Tin nhắn vi phạm quy tắc cộng đồng');
+    } else if (nsfw[0].probability > 0.5 && nsfw[0].label === 'nsfw') {
+      return res.status(500).send('Tin nhắn vi phạm quy tắc cộng đồng');
     }
 
     try {
