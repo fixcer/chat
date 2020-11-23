@@ -33,8 +33,8 @@ const addNewPure = async (req, res) => {
   });
 
   if (!response.data.accept) {
-    errorArray.push('Tin nhắn của bạn vi phạm tiêu chuẩn cộng đồng.');
-    return res.status(500).send(errorArray);
+    // errorArray.push('Tin nhắn của bạn vi phạm tiêu chuẩn cộng đồng.');
+    return res.status(500).send('PROFANITY');
   }
 
   try {

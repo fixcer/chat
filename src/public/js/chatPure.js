@@ -2,7 +2,7 @@ const profanityVocab = [
   'giết',
   'ngu',
   'vãi lờ',
-  // 'vl',
+  'vl',
   'vcl',
   'đm',
   'dm',
@@ -145,8 +145,22 @@ function chatPure(divId) {
             check.remove();
           }
         }).fail(function (error) {
-          $(`#write-chat-${divId}`).val('');
-          currentEmojiOneAre.find('.emojionearea-editor').text('');
+          if (error.responseText === 'PROFANITY') {
+            Swal.fire({
+              type: 'error',
+              title: 'Tin nhắn của bạn không tuân theo quy tắc cộng đồng.',
+              backdrop: 'rgba(85, 85, 85, 0.4)',
+              width: '52rem',
+              allowOutsideClick: false,
+              confirmButtonColor: '#2ECC71',
+              confirmButtonText: 'Tôi chắc chắn tuân thủ quy tắc cộng đồng.',
+              onClose: () => {
+                $(`#write-chat-${divId}`).val('');
+                currentEmojiOneAre.find('.emojionearea-editor').text('');
+              },
+            });
+            return;
+          }
           error.responseJSON.forEach((err) => {
             alertify.notify(err, 'error', 7);
           });
