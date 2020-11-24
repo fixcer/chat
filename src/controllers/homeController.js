@@ -62,6 +62,7 @@ const getHome = async (req, res) => {
   const getConversations = await messageService.getAllConversationItems(userId);
   const allConversationsWithMessages =
     getConversations.allConversationsWithMessages;
+  const members = getConversations.members;
 
   const iceServerList = await getICETurnServer();
 
@@ -78,6 +79,7 @@ const getHome = async (req, res) => {
     countContactsSent,
     countContactsReceived,
     allConversationsWithMessages,
+    members,
     bufferToBase64,
     lastItemOfArray,
     convertTime,

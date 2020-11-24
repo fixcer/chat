@@ -156,7 +156,7 @@ function callCreateGroupChat() {
                   <a href="javascript:void(0)">&nbsp;</a>
                 </span>
                 <span class="chat-menu-right">
-                  <a href="javascript:void(0)" class="number-members" data-toggle="modal">
+					        <a href="#membersModal_<%= conversation._id %>"" class=" number-members" data-toggle="modal">
                     <span class="show-number-members">${data.groupChat.userAmount}</span>
                     <i class="fa fa-users"></i>
                   </a>
@@ -315,7 +315,7 @@ $(document).ready(function () {
             <a href="javascript:void(0)">&nbsp;</a>
           </span>
           <span class="chat-menu-right">
-            <a href="javascript:void(0)" class="number-members" data-toggle="modal">
+					  <a href="#membersModal_<%= conversation._id %>"" class=" number-members" data-toggle="modal">
               <span class="show-number-members">${response.groupChat.userAmount}</span>
               <i class="fa fa-users"></i>
             </a>

@@ -43,6 +43,20 @@ const getAllConversationItems = (currentUserId) => {
         LIMIT_CONVERSATIONS_TAKEN
       );
 
+      let members = groupConversations.map(async (conversation) => {
+        conversation = conversation.toObject();
+        let id = conversation._id;
+        conversation = conversation.members.map(async (user) => {
+          return await UserModel.getNormalUserDataById(user.userId);
+        });
+
+        conversation = await Promise.all(conversation);
+        conversation.id = id.toString();
+        return conversation;
+      });
+
+      members = await Promise.all(members);
+
       let allConversations = userConversations.concat(groupConversations);
 
       allConversations = _.sortBy(allConversations, (item) => {
@@ -87,6 +101,7 @@ const getAllConversationItems = (currentUserId) => {
 
       resolve({
         allConversationsWithMessages,
+        members,
       });
     } catch (error) {
       reject(error);

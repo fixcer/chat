@@ -16,7 +16,6 @@ import request from 'request-promise';
 import fs from 'fs';
 
 const renderFile = promisify(ejs.renderFile).bind(ejs);
-const requestPromise = promisify(request);
 
 const addNewPure = async (req, res) => {
   const errorArray = [];

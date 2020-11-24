@@ -1,0 +1,47 @@
+<% allConversationsWithMessages.forEach(function(conversation, index) { %>
+<div class="modal fade" id="membersModal_<%= conversation._id %>" role="dialog">
+	<div class="modal-dialog modal-lg">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal">
+					&times;
+				</button>
+				<h4 class="modal-title">Những thành viên trong cuộc trò chuyện.</h4>
+			</div>
+			<div class="modal-body">
+				<div class="find-user-bottom">
+					<ul class="contactList">
+						<% members.forEach(function(users) { %>
+						<% if (conversation._id == users.id) { %>
+						<% users.forEach(function(u) { %>
+						<li class="_contactList" data-uid="<%= u._id %>">
+							<div class="contactPanel">
+								<div class="user-avatar">
+									<img src="images/users/<%= u.avatar %>" alt="" />
+								</div>
+								<div class="user-name">
+									<p><%= u.username %></p>
+								</div>
+								<br />
+								<div class="user-address">
+									<span>&nbsp <%= u.address %></span>
+								</div>
+								<% if (user._id.toString() != u._id) { %>
+								<div class="user-talk" data-uid="<%= u._id %>">
+									Trò chuyện
+								</div>
+								<% } else { %>
+								<br>
+								<% } %>
+							</div>
+						</li>
+						<% }) %>
+						<% } %>
+						<% }); %>
+					</ul>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+<% }); %>
