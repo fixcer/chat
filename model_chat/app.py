@@ -4,14 +4,10 @@ from model import check_profanity_vocab
 app = Flask(__name__)
 
 
-@app.route('/', methods=['POST'])
+# A welcome message to test our server
+@app.route('/')
 def index():
-    data = {
-        'status': 200,
-        'msg': 'Ok'
-    }
-
-    return jsonify(data)
+    return "<h1>Welcome to our server !!</h1>"
 
 
 @app.route('/filter', methods=['POST'])
